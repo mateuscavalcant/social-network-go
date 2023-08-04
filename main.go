@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"social-network-go/api"
+)
 
 func main() {
-	fmt.Println("hello world!")
+	err := api.InitServer()
+	if err != nil {
+		log.Fatal("Error initializing server: ", err)
+	}
+
 }
