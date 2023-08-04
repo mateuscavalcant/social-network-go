@@ -4,7 +4,6 @@ import (
 	CON "social-network-go/pkg/config"
 )
 
-// Get function to get anything of user with ID
 func Get(id interface{}, what string) string {
 	db := CON.DB()
 	var RET string
@@ -12,7 +11,6 @@ func Get(id interface{}, what string) string {
 	return RET
 }
 
-// IsFollowing route
 func IsFollowing(by string, to string) bool {
 	db := CON.DB()
 	var followCount int
@@ -23,7 +21,6 @@ func IsFollowing(by string, to string) bool {
 	return true
 }
 
-// UsernameDecider Helper
 func UsernameDecider(user int, session string) string {
 	username := Get(user, "username")
 	sesUsername := Get(session, "username")
@@ -33,7 +30,6 @@ func UsernameDecider(user int, session string) string {
 	return username
 }
 
-// NoOfFollowers helper
 func NoOfFollowers(user int) int {
 	db := CON.DB()
 	var followersCount int
@@ -41,7 +37,6 @@ func NoOfFollowers(user int) int {
 	return followersCount
 }
 
-// LikedOrNot helper
 func LikedOrNot(post int, user interface{}) bool {
 	db := CON.DB()
 	var likeCount int
