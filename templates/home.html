@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="public/css/home.css">
+
+</head>
+<body>
+  <h1>Home</h1>
+
+  <!-- Formulário de criação de postagem -->
+  <div id="create-post-form-container" style="display: none;"></div>
+  <form id="post-form">
+    <div class="post-form-create">
+      <textarea name="content" id="content" placeholder="What's happening?"></textarea>
+      <button type="submit">Postar</button>
+    </div>
+  </form>
+
+  <!-- Container para exibir os posts -->
+  
+  <div id="posts-container"></div>
+
+  <button id="create-post-btn">Create Post</button>
+  <button id="logout-btn">Logout</button>
+
+  <script src="public/js/home.js"></script>
+</body>
+</html>

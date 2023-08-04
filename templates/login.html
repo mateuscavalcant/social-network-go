@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Login and Signup Form</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="public/css/style.css">
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+                
+</head>
+<body>
+    <section class="container forms">
+        <div class="form login-link">
+            <div class="form-content">
+                <header>Login</header>
+                <form id="login-form" method="post" action="/login">
+                    <div class="field input-field">
+                        <input type="email" name="email" id="email" placeholder="Email" class="input">
+                        <span id="error-email" class="error-message"></span>
+                    </div>
+
+                    <div class="field input-field">
+                        <input type="password" name="password" id="password" placeholder="Password" class="password">
+                        <span id="error-password" class="error-message"></span>
+                    </div>
+
+                    <div class="form-link">
+                        <a href="#" class="forgot-pass">Forgot password?</a>
+                    </div>
+
+                    <div class="field button-field">
+                        <button type="submit">Login</button>
+                    </div>
+                </form>
+
+                <div class="form-link">
+                  <span>Don't have an account? <a href="/signup" class="link signup-link">Signup</a></span>
+              </div>
+              
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+                
+            var formData = new FormData();
+            formData.append("email", email);
+            formData.append("password", password);
+                
+            fetch("/login", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    // Exibe as mensagens de erro correspondentes nos campos do formulário
+                    document.getElementById("error-email").textContent = data.error.email;
+                    document.getElementById("error-password").textContent = data.error.password;
+                } else {
+                    console.log(data.message);
+                    
+                    // Redirecionamento manual para /create-post
+                    window.location.href = "http://localhost:8080/home";
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>

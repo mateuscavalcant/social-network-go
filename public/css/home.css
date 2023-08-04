@@ -1,0 +1,82 @@
+ /* Estilos para os posts */
+ .post {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 600px; /* Ajuste a largura desejada */
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+    overflow: auto;
+  }
+
+  .post p {
+    margin: 0;
+  }
+
+  .post-title {
+    margin-bottom: 10px;
+  }
+
+  .post-content {
+    margin-bottom: 10px;
+  }
+
+  .post-links {
+    margin-right: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .post-links img {
+    margin-right: 60px;
+    width: 20px; /* Ajuste a largura desejada */
+    height: 20px;
+    cursor: pointer;
+  }
+
+  /* Estilos para a caixa de input de postagem */
+  .post-form-create {
+    padding: 3px;
+    width: 613.5px; /* Ajuste a largura desejada */
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    position: relative; /* Adicionamos a posição relativa para o textarea ser posicionado */
+    z-index: 1; /* Definimos um z-index para que o textarea fique acima do post abaixo */
+  }
+
+  .post-form-create textarea {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    outline: none;
+    resize: none;
+    min-height: 70px;
+    margin-bottom: -5px; /* Ajuste para aproximar o textarea do post abaixo */
+  }
+
+  .post-form-create button {
+    margin-left: 8px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  /* Adicionei um estilo para remover a margem inferior do último post */
+  .post:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Estilo para remover a margem inferior do post logo abaixo do textarea */
+  .post + .post-form-create {
+    margin-top: -10px; /* Ajuste para remover a margem entre o post e o textarea */
+  }
