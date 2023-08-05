@@ -1,10 +1,10 @@
 document.getElementById("login-form").addEventListener("submit", function(event) {
     event.preventDefault();
-    var email = document.getElementById("identifier").value;
+    var identifier = document.getElementById("identifier").value;
     var password = document.getElementById("password").value;
         
     var formData = new FormData();
-    formData.append("identifier", email);
+    formData.append("identifier", identifier);
     formData.append("password", password);
         
     fetch("/login", {
@@ -15,7 +15,7 @@ document.getElementById("login-form").addEventListener("submit", function(event)
     .then(data => {
         if (data.error) {
             // Exibe as mensagens de erro correspondentes nos campos do formulário
-            document.getElementById("error-email").textContent = data.error.email;
+            document.getElementById("error-identifier").textContent = data.error.identifier;
             document.getElementById("error-password").textContent = data.error.password;
         } else {
             console.log(data.message);
