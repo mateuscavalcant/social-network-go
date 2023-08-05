@@ -1,10 +1,10 @@
 document.getElementById("login-form").addEventListener("submit", function(event) {
     event.preventDefault();
-    var email = document.getElementById("email").value;
+    var email = document.getElementById("identifier").value;
     var password = document.getElementById("password").value;
         
     var formData = new FormData();
-    formData.append("email", email);
+    formData.append("identifier", email);
     formData.append("password", password);
         
     fetch("/login", {
