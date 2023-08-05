@@ -21,7 +21,7 @@
     max-width: 430px;
     width: 100%;
     padding: 30px;
-    border-radius: 9px;
+    border-radius: 15px;
     background: #ffffff;
 }
 .form.signup{
@@ -60,7 +60,7 @@ form{
     border: none;
     font-size: 16px;
     font-weight: 400;
-    border-radius: 9px;
+    border-radius: 7px;
 }
 .field input{
     outline: none;
