@@ -11,7 +11,6 @@ import (
 )
 
 func ProfilePost(c *gin.Context) {
-
 	idInterface, _ := utils.AllSessions(c)
 	id, _ := strconv.Atoi(idInterface.(string))
 	db := CON.DB()
