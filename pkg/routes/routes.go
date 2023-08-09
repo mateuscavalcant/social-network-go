@@ -11,7 +11,7 @@ import (
 func InitRoutes(r *gin.RouterGroup) {
 	r.POST("/signup", auth.Signup)
 	r.POST("/validate-email", auth.ExistEmail)
-	r.POST("/login", auth.UserLogin)
+	r.POST("/login", auth.Login)
 	r.POST("/create-post", post.CreateNewPost)
 	r.GET("/feed", controller.Home)
 	r.GET("/loggout", auth.Logout)
