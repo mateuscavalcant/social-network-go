@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"social-network-go/pkg/controller/auth"
 	"social-network-go/pkg/controller/app"
+	"social-network-go/pkg/controller/auth"
 
 	"github.com/gin-gonic/gin"
 )
