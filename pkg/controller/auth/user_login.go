@@ -13,7 +13,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func UserLogin(c *gin.Context) {
+func Login(c *gin.Context) {
 	var user models.User
 
 	email := strings.TrimSpace(c.PostForm("email"))
