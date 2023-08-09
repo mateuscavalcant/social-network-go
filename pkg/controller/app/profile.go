@@ -1,4 +1,4 @@
-package home
+package app
 
 import (
 	"log"
@@ -10,8 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Feed(c *gin.Context) {
-	utils.LoggedIn(c, "/welcome")
+func ProfilePost(c *gin.Context) {
 
 	idInterface, _ := utils.AllSessions(c)
 	id, _ := strconv.Atoi(idInterface.(string))
