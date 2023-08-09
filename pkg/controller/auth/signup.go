@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"io"
 	"log"
+	"os"
 	CON "social-network-go/pkg/config"
 	"social-network-go/pkg/config/err"
 	"social-network-go/pkg/config/validators"
@@ -63,15 +65,31 @@ func Signup(c *gin.Context) {
 	user.Email = email
 	user.Password = password
 
+	imagePath := "public/images/user_profile.jpeg"
+	imageFile, err := os.Open(imagePath)
+	if err != nil {
+		log.Println("Error opening image:", err)
+		c.JSON(500, gin.H{"error": "Failed to open image"})
+		return
+	}
+	defer imageFile.Close()
+
+	imageContent, err := io.ReadAll(imageFile)
+	if err != nil {
+		log.Println("Error reading image content:", err)
+		c.JSON(500, gin.H{"error": "Failed to read image content"})
+		return
+	}
+
 	db := CON.DB()
 
-	query := "INSERT INTO user1 (username, email, password) VALUES (?, ?, ?)"
+	query := "INSERT INTO user1 (username, email, password, profile_image) VALUES (?, ?, ?, ?)"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = stmt.Exec(user.Username, user.Email, validators.Hash(user.Password))
+	_, err = stmt.Exec(user.Username, user.Email, validators.Hash(user.Password), imageContent)
 	if err != nil {
 		log.Println("Error executing SQL statement:", err)
 		c.JSON(500, gin.H{"error": "Failed to create user"})
