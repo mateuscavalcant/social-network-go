@@ -28,9 +28,9 @@ func ProfilePost(c *gin.Context) {
 
 	posts := []Post{}
 
-	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id"
+	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
 
-	rows, err := db.Query(query)
+	rows, err := db.Query(query, id)
 	if err != nil {
 		log.Println("Failed to query statement", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
