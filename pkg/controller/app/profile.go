@@ -8,17 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Post struct {
+	PostID     int    `json:"post-id"`
+	PostUserID int    `json:"post-user-id"`
+	UserID     int    `json:"user-id"`
+	Content    string `json:"content"`
+	CreatedBy  string `json:"createdby"`
+}
+
 func ProfilePost(c *gin.Context) {
 	username := c.Param("username")
 	db := CON.DB()
-
-	type Post struct {
-		PostID     int    `json:"post-id"`
-		PostUserID int    `json:"post-user-id"`
-		UserID     int    `json:"user-id"`
-		Content    string `json:"content"`
-		CreatedBy  string `json:"createdby"`
-	}
 
 	// Fetch user ID based on username
 	var userID int
@@ -68,7 +68,8 @@ func ProfilePost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
+	// Render the HTML template
+	c.HTML(http.StatusOK, "profile.html", gin.H{
 		"username": username,
 		"posts":    posts,
 	})
