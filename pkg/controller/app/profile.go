@@ -4,15 +4,12 @@ import (
 	"log"
 	"net/http"
 	CON "social-network-go/pkg/config"
-	"social-network-go/pkg/utils"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ProfilePost(c *gin.Context) {
-	idInterface, _ := utils.AllSessions(c)
-	id, _ := strconv.Atoi(idInterface.(string))
+	username := c.Param("username")
 	db := CON.DB()
 
 	type Post struct {
@@ -22,14 +19,24 @@ func ProfilePost(c *gin.Context) {
 		Content    string `json:"content"`
 		CreatedBy  string `json:"createdby"`
 	}
-	var post Post
-	post.UserID = id
+
+	// Fetch user ID based on username
+	var userID int
+	userQuery := "SELECT id FROM user1 WHERE username = ?"
+	err := db.QueryRow(userQuery, username).Scan(&userID)
+	if err != nil {
+		log.Println("Failed to fetch user ID", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to fetch user ID",
+		})
+		return
+	}
 
 	posts := []Post{}
 
 	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
 
-	rows, err := db.Query(query, id)
+	rows, err := db.Query(query, userID)
 	if err != nil {
 		log.Println("Failed to query statement", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -40,7 +47,7 @@ func ProfilePost(c *gin.Context) {
 	defer rows.Close()
 
 	for rows.Next() {
-
+		var post Post
 		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
 		if err != nil {
 			log.Println("Failed to scan statement", err)
@@ -62,6 +69,7 @@ func ProfilePost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"posts": posts,
+		"username": username,
+		"posts":    posts,
 	})
 }
