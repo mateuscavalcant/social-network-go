@@ -14,15 +14,17 @@
   }
 
   .post-title {
-    margin-bottom: 10px;
+    display: flex; /* Usar flexbox para alinhar o ícone e o texto */
+    align-items: center; /* Centralizar verticalmente */
   }
 
   .post-content {
     margin-bottom: 10px;
+    margin-left: 50px;
   }
 
   .post-links {
-    margin-right: 100px;
+    margin-left: 50px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -80,3 +82,12 @@
   .post + .post-form-create {
     margin-top: -10px; /* Ajuste para remover a margem entre o post e o textarea */
   }
+
+  /* Estilização para o ícone de perfil */
+.profile-icon {
+  width: 40px; /* Ajuste o tamanho do ícone conforme necessário */
+  height: 40px;
+  border-radius: 50%; /* Deixa o ícone redondo */
+  margin-right: 10px; /* Espaçamento entre o ícone e o campo CreatedBy */
+}
+
