@@ -1,19 +1,33 @@
-    
-    function loadPosts() {
+
+    function loadPostsProfile() {
         $.ajax({
-          url: "/feed",
+          url: "/profile",
           method: "GET",
           success: function(response) {
-            // Limpar o conteúdo anterior
-            $("#posts-container").empty();
+            
+              // Exibir os detalhes do perfil do usuário
+              var userDetailsHTML = '<div class="user">' +
+              '<header>' +
+              
+              '<img src="public/images/user-icon.jpg" class="user-icon">' +
+              '<div class="user-title">' +
+              '<p>@' + response.profile.username + '</p>' +
+              '</div>' +
+              '</header>' +
+              '</div>';
+
+          var $userDetails = $(userDetailsHTML);
+          $("#user-profile-container").append($userDetails);
+          $("#posts-container").empty();
       
             // Iterar sobre os posts retornados e adicionar na página
             response.posts.forEach(function(post) {
               var postHTML = '<div class="post">' +
                 '<header>' +
-                '<div class="post-title">' +
+                '<div class="post-title">' +'<div class="post-title">' +
                 '<img src="public/images/user-icon.jpg" class="profile-icon">' +
-                '<p id="username-' + post.postID + '">@' + post.createdby + '</p>' +
+                
+                '<p id="username-' + post.postid + '" class="post-username">@' + post.createdby + '</p>' +
                 '</div>' +
                 '</header>' +
                 '<main>' +
@@ -46,47 +60,18 @@
           }
         });
       }
+
+      function handleHome(event) {
+        event.preventDefault();
       
-          // Função para lidar com o envio do formulário de criação de postagem
-          function handleCreatePostFormSubmit(event) {
-            event.preventDefault();
-      
-            var formData = $(this).serialize();
-      
-            // Enviar os dados do formulário para a rota "/create-post" no back-end
-            $.ajax({
-              url: "/create-post",
-              method: "POST",
-              data: formData,
-              success: function(response) {
-                // Limpar o formulário e esconder novamente
-                $("#post-form")[0].reset();
-                $("#create-post-form-container").hide();
-      
-                // Recarregar os posts na página
-                loadPosts();
-              },
-              error: function(xhr, status, error) {
-                console.error(error);
-              }
-            });
-          }
-          function handleProfile(event) {
-            event.preventDefault();
-            window.location.replace("/:username");
-          }
-      
-      
-          // Chamar a função para carregar os posts ao carregar a página
+            window.location.replace("/home");
+      }
+     
           $(document).ready(function() {
             
-            loadPosts();
+            
+            loadPostsProfile();
+
+            $("#home-btn").click(handleHome);
       
-            // Associar evento de envio ao formulário de criação de postagem
-            $("#post-form").submit(handleCreatePostFormSubmit);
-
-
-            $("#profile-btn").click(handleProfile);
-
-
           });

@@ -1,35 +1,40 @@
  /* Estilos para os posts */
  .post {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 600px; /* Ajuste a largura desejada */
-    margin-left: auto;
-    margin-right: auto;
-    word-wrap: break-word;
-    overflow: auto;
-  }
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 600px; /* Ajuste a largura desejada */
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
+  overflow: auto;
+}
 
-  .post p {
-    margin: 0;
-  }
+.post p {
+  margin: 0;
+}
 
-  .post-title {
-    display: flex; /* Usar flexbox para alinhar o ícone e o texto */
-    align-items: center; /* Centralizar verticalmente */
-  }
+.post-title {
+  display: flex; /* Usar flexbox para alinhar o ícone e o texto */
+  align-items: center; /* Centralizar verticalmente */
+  margin-top: -15px;
+  color: #5d5d5d;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+}
 
-  .post-content {
-    margin-bottom: 10px;
-    margin-left: 50px;
-  }
+.post-content {
+  margin-top: -15px;
+  margin-left: 50px;
+}
 
-  .post-links {
-    margin-left: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 10px;
-  }
+.post-links {
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
 
   .post-links img {
     margin-right: 60px;
@@ -85,9 +90,73 @@
 
   /* Estilização para o ícone de perfil */
 .profile-icon {
+  margin-top: 15px;
   width: 40px; /* Ajuste o tamanho do ícone conforme necessário */
   height: 40px;
   border-radius: 50%; /* Deixa o ícone redondo */
   margin-right: 10px; /* Espaçamento entre o ícone e o campo CreatedBy */
+} 
+
+.bar-btn {
+  display: flex;
+  gap: 10px;
 }
 
+.vertical-bar {
+  display: flex;
+  align-items: center; /* Alinha a imagem verticalmente no botão */
+  background: none; /* Remove o plano de fundo do botão */
+  border: none; /* Remove a borda do botão */
+  padding: 0; /* Remove o preenchimento interno do botão */
+  cursor: pointer;
+}
+
+
+#profile-btn img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+#logout-btn img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+#home-btn img {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+#home-btn {
+  background-color: #ffffff;
+  position: fixed;
+  color: white;
+  border: none;
+  cursor: pointer;
+  top: 130px;
+  left: 20px;
+}  
+#logout-btn {
+background-color: #ffffff;
+position: fixed;
+color: white;
+border: none;
+cursor: pointer;
+top: 250px;
+left: 20px;
+}
+
+/* Estilos para o botão com ID "profile-btn" */
+#profile-btn{
+background-color: #ffffff;
+position: fixed;
+color: white;
+border: none;
+cursor: pointer;
+top: 190px;
+left: 20px;
+
+}

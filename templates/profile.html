@@ -1,27 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
+  <title>Profile</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="public/css/home.css">
+  <link rel="stylesheet" href="public/css/profile.css">
 
 </head>
 <body>
-  <h1>Home</h1>
-
-  <!-- Formulário de criação de postagem -->
-  <div id="create-post-form-container" style="display: none;"></div>
-  <form id="post-form">
-    <div class="post-form-create">
-      <textarea name="content" id="content" placeholder="What's happening?"></textarea>
-      <button type="submit">Postar</button>
-    </div>
-  </form>
-
+  <h1>Profile</h1>
+  <div id="user-profile-container"></div>
   <!-- Container para exibir os posts -->
   <div id="posts-container"></div>
-
-  
   <div class="bar-btn vertical-bar">
     <button id="home-btn">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAbFJREFUWEft1zsvBUEUwPH/rXwCj1B4NEoSHYnCV1Dp9VpREFHcQuUDqDW+gFaCTqjQeCXiEb1EgRyZuZmMmZ3Xrlxyp9li5/Hbc05mZlt0WWt1mYd/CZoEdoFPYBm4Kol6aYQmgGNgUCGegVngOhdVArIx2lCEygVJmg6BAaW4U89R9XwB5nPSlwOyI/MAzCnIETBSkr5UkA9jRqgIlQIKYXQNSdqyUbGgWEwxKgaUiilChUC5mGxUFagUk4XygerCJKNcIHvTk0nHgdvc40CNGwNujDmcm6cN8h0HoVqLtcoBbLYfx4y90CUgEbJbUyBZ5xyY1gvaC50BU78MOgVmfCDJ8xLQB2wYMBveDywCQ55cPQH7wKv13kzZJvAG7AH3PpA53hxsgiSCB8YdyFc/gloALowOvjk7XapqwzfYl1YX7ERd2PS7RkAf0LmLS9hdTaf7XaW/UVDwK9X92lUWwbE5KQtO2gNVbAehWglGt5eyUHT/VIRkp9V/pLGneWy/R2DY1bkqQm1gNXaFxH5bwHoqSLBrwAogh2kdTX4qd4Bt32R13XPqwH7P0QOFQvkFjmiEJTam5Q4AAAAASUVORK5CYII=" alt="" srcset="">
@@ -34,9 +23,8 @@
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAXtJREFUWEftmM8qxUEUxz93wUtRrChFHkJJsrBkg4VYWshCdh7AyoYNIhTPQfECZKFvjZr7a+Y3c+4d/GhO3cVtzp9P55w5M/Pr0THpdYyHCpSqSFuGJoAxYDTlxLj+DlwDVyG7GNA+sGwMZFXfA1abRiGgeeDE6n1A/WngzLcNAa0D207pErgYMFjMbBJQO0gUaycFtAlsOKUtQP9LSqv/UIYq0L8v2SLwADxmNpq5h7QL9JNoh6V2mQKsAQvAcQaUGSjDZ5+KH+DQDdSPFic/CiSOO2AOeIlAmYH8kuVkyx90X/rPgCb+fcCBGcg3yAGK6egQDfXVrwGpj5aAowaxGahEyV5dH92WKJm1TM0Sax7NAk+lmnoYIM0h9Y36JyZDlcwyGFcAzaGUmIGsp71uliqT5k+OfDtQDoSvU4FSGfv7GercJX8GOE3lvdD6FHDu+4o9FA/cOVQobtDNrrvY9S2mntLjwEhhqjf3jL4J+a1fP1LZrhlKZegTy9N2JYd/DD8AAAAASUVORK5CYII=" alt="" srcset="">
     </button>
   </div>
-  
 
-  <script src="public/js/home.js"></script>
+  <script src="public/js/profile.js"></script>
   <script src="public/js/logout.js"></script>
 </body>
 </html>
