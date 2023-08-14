@@ -1,6 +1,7 @@
 package app
 
 import (
+	"log"
 	"net/http"
 	CON "social-network-go/pkg/config"
 	"social-network-go/pkg/utils"
@@ -18,6 +19,11 @@ func Follow(c *gin.Context) {
 	stmt, _ := db.Prepare("INSERT INTO follow(followBy, followTo, followTime) VALUES(?, ?, ?)")
 	_, err := stmt.Exec(id, user, time.Now())
 	if err != nil {
+		log.Println("Failed to query statement", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to execute query",
+		})
+		return
 
 	}
 
@@ -36,6 +42,11 @@ func Unfollow(c *gin.Context) {
 	stmt, _ := db.Prepare("DELETE FROM follow WHERE followBy=? AND followTo=?")
 	_, err := stmt.Exec(id, user)
 	if err != nil {
+		log.Println("Failed to query statement", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to execute query",
+		})
+		return
 
 	}
 
