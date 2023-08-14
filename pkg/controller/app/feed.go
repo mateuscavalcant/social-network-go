@@ -23,7 +23,6 @@ func Feed(c *gin.Context) {
 		UserID     int    `json:"user-id"`
 		Content    string `json:"content"`
 		CreatedBy  string `json:"createdby"`
-		ShowDelete bool   `json:"show-delete"`
 	}
 	var post Post
 	post.UserID = id
@@ -51,14 +50,20 @@ func Feed(c *gin.Context) {
 			})
 			return
 		}
+		log.Println("CreatedBy:", post.CreatedBy)
 
+		posts = append(posts, post)
 	}
-	authenticatedUserID, _ := utils.AllSessions(c)
-	post.ShowDelete = post.UserID == authenticatedUserID
-	posts = append(posts, post)
+
+	if err := rows.Err(); err != nil {
+		log.Println("Failed 3", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Error occurred while iterating rows",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"posts":               posts,
-		"authenticatedUserID": authenticatedUserID,
+		"posts": posts,
 	})
 }
