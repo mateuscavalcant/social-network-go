@@ -72,8 +72,17 @@
             });
           }
           function handleProfile(event) {
+
             event.preventDefault();
-            window.location.replace("/:username");
+            $.ajax({
+              url: "/profile",
+              method: "GET",
+              success: function(response) {
+                var username = response.profile.username
+                window.location.replace("/"+ username);
+              }
+                
+            });
           }
       
       

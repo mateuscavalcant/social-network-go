@@ -77,7 +77,6 @@
     border-radius: 15px;
     cursor: pointer;
   }
-
   /* Adicionei um estilo para remover a margem inferior do último post */
   .post:last-child {
     margin-bottom: 0;
