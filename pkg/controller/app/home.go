@@ -57,3 +57,23 @@ func CreateNewPost(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+func DeletePost(c *gin.Context) {
+	post := c.PostForm("post")
+	db := CON.DB()
+
+	_, err := db.Exec("DELETE FROM user_post WHERE postID=?", post)
+	if err != nil {
+		log.Println("Error executing SQL statement:", err)
+		// Tratar o erro, por exemplo, exibir uma mensagem de erro ou retornar um erro de servidor
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to prepare statement",
+		})
+		return
+	}
+	resp := map[string]interface{}{
+		"mssg": "Post Deleted!",
+	}
+	c.JSON(http.StatusOK, resp)
+
+}
