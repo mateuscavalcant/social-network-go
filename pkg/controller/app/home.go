@@ -59,21 +59,52 @@ func CreateNewPost(c *gin.Context) {
 }
 
 func DeletePost(c *gin.Context) {
-	post := c.PostForm("post")
-	db := CON.DB()
+	postID := c.PostForm("post")
+	userIDInterface, _ := utils.AllSessions(c)
 
-	_, err := db.Exec("DELETE FROM user_post WHERE postID=?", post)
-	if err != nil {
-		log.Println("Error executing SQL statement:", err)
-		// Tratar o erro, por exemplo, exibir uma mensagem de erro ou retornar um erro de servidor
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to prepare statement",
+	if userIDInterface == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Unauthorized",
 		})
 		return
 	}
+
+	userID, err := strconv.Atoi(userIDInterface.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Invalid user ID",
+		})
+		return
+	}
+
+	db := CON.DB()
+
+	var postAuthorID int
+	err = db.QueryRow("SELECT id FROM user_post WHERE postID=?", postID).Scan(&postAuthorID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to fetch post details",
+		})
+		return
+	}
+
+	if postAuthorID != userID {
+		c.JSON(http.StatusForbidden, gin.H{
+			"error": "You don't have permission to delete this post",
+		})
+		return
+	}
+
+	_, err = db.Exec("DELETE FROM user_post WHERE postID=?", postID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to delete post",
+		})
+		return
+	}
+
 	resp := map[string]interface{}{
 		"mssg": "Post Deleted!",
 	}
 	c.JSON(http.StatusOK, resp)
-
 }

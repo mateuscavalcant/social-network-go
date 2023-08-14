@@ -1,7 +1,6 @@
 package app
 
 import (
-	"encoding/base64"
 	"log"
 	"net/http"
 	CON "social-network-go/pkg/config"
@@ -19,19 +18,19 @@ func Feed(c *gin.Context) {
 	db := CON.DB()
 
 	type Post struct {
-		PostID       int    `json:"post-id"`
-		PostUserID   int    `json:"post-user-id"`
-		UserID       int    `json:"user-id"`
-		Content      string `json:"content"`
-		CreatedBy    string `json:"createdby"`
-		ProfileImage string `json:"profile-image"`
+		PostID     int    `json:"post-id"`
+		PostUserID int    `json:"post-user-id"`
+		UserID     int    `json:"user-id"`
+		Content    string `json:"content"`
+		CreatedBy  string `json:"createdby"`
+		ShowDelete bool   `json:"show-delete"`
 	}
 	var post Post
 	post.UserID = id
 
 	posts := []Post{}
 
-	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username, user1.profile_image FROM user_post JOIN user1 ON user1.id = user_post.id"
+	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id"
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -44,8 +43,7 @@ func Feed(c *gin.Context) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var profileImageBlob []byte
-		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy, &profileImageBlob)
+		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
 		if err != nil {
 			log.Println("Failed to scan statement", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -53,23 +51,14 @@ func Feed(c *gin.Context) {
 			})
 			return
 		}
-		log.Println("CreatedBy:", post.CreatedBy)
 
-		// Codificar a imagem em base64 e incluir no campo ProfileImage
-		post.ProfileImage = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(profileImageBlob)
-
-		posts = append(posts, post)
 	}
-
-	if err := rows.Err(); err != nil {
-		log.Println("Failed 3", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Error occurred while iterating rows",
-		})
-		return
-	}
+	authenticatedUserID, _ := utils.AllSessions(c)
+	post.ShowDelete = post.UserID == authenticatedUserID
+	posts = append(posts, post)
 
 	c.JSON(http.StatusOK, gin.H{
-		"posts": posts,
+		"posts":               posts,
+		"authenticatedUserID": authenticatedUserID,
 	})
 }
