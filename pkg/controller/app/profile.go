@@ -27,7 +27,7 @@ type Post struct {
 
 var user User
 
-func Profile(c *gin.Context) {
+func YourProfile(c *gin.Context) {
 	utils.LoggedIn(c, "/welcome")
 
 	idInterface, _ := utils.AllSessions(c)
@@ -97,7 +97,7 @@ func Profile(c *gin.Context) {
 	})
 }
 
-func RenderProfileTemplate(c *gin.Context) {
+func YourProfileTemplate(c *gin.Context) {
 	// Recupere o nome de usuário da URL
 	username := c.Param("username")
 
