@@ -14,6 +14,8 @@ func InitRoutes(r *gin.RouterGroup) {
 	r.POST("/create-post", app.CreateNewPost)
 	r.GET("/feed", app.Feed)
 	r.GET("/loggout", auth.Logout)
-	r.GET("/:username", app.RenderProfileTemplate)
-	r.GET("/profile", app.Profile)
+	r.GET("/:username", app.YourProfileTemplate)
+	r.GET("/profile", app.YourProfile)
+	r.GET("/profile/:username", app.AnotherProfileTemplate)
+	r.GET("/another_profile", app.AnotherProfile)
 }
