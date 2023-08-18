@@ -1,5 +1,5 @@
 
- .user {
+.user {
     border: 1px solid #ccc;
     padding: 10px;
     width: 600px; /* Ajuste a largura desejada */
@@ -42,7 +42,7 @@
   .post-title {
     display: flex; /* Usar flexbox para alinhar o ícone e o texto */
     align-items: center; /* Centralizar verticalmente */
-    margin-top: -15px;
+    margin-top: -7.5px;
     color: #6f6f6f;
     font-weight:normal;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -222,6 +222,7 @@
     border: #e5e5e5;
   }
 
+
   #edit-profile-btn {
     margin-right: 10px;
     margin-top: 70px;
@@ -243,14 +244,14 @@
     background-color: #000000;
     color: #ffffff;
     font-weight: bold;
-    border: 1px solid #77C3EC;
-    border-radius: 17px;
-    padding: 9px 15px;
+    border: 1px solid #000000;
+    border-radius: 19px;
+    padding: 9px 18px;
     cursor: pointer;
 
   }
   #follow-btn:hover {
-    background-color: #9DD9F3;
-    border: 1px #9DD9F3;
+    background-color: #1e1e1e;
+    border: 1px #000000;
   }
   

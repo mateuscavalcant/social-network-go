@@ -17,14 +17,19 @@
   display: flex; /* Usar flexbox para alinhar o ícone e o texto */
   align-items: center; /* Centralizar verticalmente */
   margin-top: -15px;
-  color: #5d5d5d;
-  font-family: Arial, sans-serif;
+  color: #6f6f6f;
+  font-weight:normal;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
 }
 
 .post-content {
+  color: #3d3d3d;
   margin-top: -15px;
   margin-left: 50px;
+  font-weight: normal;
+  font-size: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .post-links {
@@ -46,6 +51,7 @@
   /* Estilos para a caixa de input de postagem */
   .post-form-create {
     padding: 3px;
+    height: 115px;
     width: 613.5px; /* Ajuste a largura desejada */
     margin-left: auto;
     margin-right: auto;
@@ -71,7 +77,7 @@
   .post-form-create button {
     margin-left: 8px;
     padding: 9px 15px;
-    background-color: #77C3EC;
+    background-color: #000000;
     color: #fff;
     border: none;
     border-radius: 15px;
@@ -97,8 +103,22 @@
 } 
 
 .bar-btn {
+  
   display: flex;
   gap: 10px;
+}
+
+.bar-btn span {
+  vertical-align: super;
+  color: #000000;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  margin-left: 9px;
+  margin-bottom: 5px;
+  
+  
 }
 
 .vertical-bar {
@@ -110,52 +130,61 @@
   cursor: pointer;
 }
 
+.bar-btn img {
+  width: 29px;
+  height: 30px;
+  margin-right: 5px;
+  margin-left: -10px;
+  vertical-align: bottom;
+}
 
-#profile-btn img {
-  width: 30px;
-  height: 30px;
-  vertical-align: middle;
-  margin-right: 5px;
-}
-#logout-btn img {
-  width: 30px;
-  height: 30px;
-  vertical-align: middle;
-  margin-right: 5px;
-}
-#home-btn img {
-  width: 30px;
-  height: 30px;
-  vertical-align: middle;
-  margin-right: 5px;
-}
+
 #home-btn {
   background-color: #ffffff;
   position: fixed;
   color: white;
   border: none;
+  border-radius: 25px;
+  padding: 11px 25px;
   cursor: pointer;
   top: 130px;
-  left: 20px;
+  left: 9px;
 }  
 #logout-btn {
 background-color: #ffffff;
 position: fixed;
 color: white;
 border: none;
+border-radius: 25px;
+padding: 11px 25px;
 cursor: pointer;
 top: 250px;
-left: 20px;
+left: 9px;
 }
 
 /* Estilos para o botão com ID "profile-btn" */
 #profile-btn{
 background-color: #ffffff;
 position: fixed;
-color: white;
+color: rgb(0, 0, 0);
 border: none;
+border-radius: 25px;
+padding: 11px 25px;
 cursor: pointer;
 top: 190px;
-left: 20px;
+left: 9px;
 
+}
+
+#profile-btn:hover{
+  background-color: #e5e5e5;
+  border: #e5e5e5;
+}
+#home-btn:hover{
+  background-color: #e5e5e5;
+  border: #e5e5e5;
+}
+#logout-btn:hover{
+  background-color: #e5e5e5;
+  border: #e5e5e5;
 }

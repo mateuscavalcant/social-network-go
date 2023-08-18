@@ -18,7 +18,7 @@
               '<main>' +
               '<button id="edit-profile-btn">Edit Profile</button>' +
               '</div>' +
-              '</main>'
+              '</main>' +
               '</div>';
               
 
@@ -29,26 +29,25 @@
             // Iterar sobre os posts retornados e adicionar na página
             response.posts.forEach(function(post) {
               var postHTML = '<div class="post">' +
-                '<header>' +
-                '<div class="post-title">' +'<div class="post-title">' +
-                '<img src="public/images/user-icon.jpg" class="profile-icon">' +
-                
-                '<p id="username-' + post.postid + '" class="post-username">@' + post.createdby + '</p>' +
-                '</div>' +
-                '</header>' +
-                '<main>' +
-                '<div class="post-content">' +
-                '<p>' + post.content + '</p>' +
-                '</div>' +
-                '<div class="post-links">' +
-                '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAwtJREFUWEfl11vopWMUx/HPOAwhOYTCZJJxJW6c0pSc4sYxUhrkVCSlSCTG4YYiNy4YIzFyiBJ3zi4c5mZKuJCGxEgYDQk5jn5j7X9vr/3u/e7Ze9c0frVrv/t5nvV+n7WeZ621F9nGtGgb47FdAO2P03EKjsB+9Ymzv8O3+Aiv4ZX6rXcg+npoF1yAK3Fib+tsxht4BC/g93Fr+wCdisdx4DhjY8Y/xwq8M2reKKAd8CCuaRn4s8LxHtbiC2yoOQfjEByPEyqsO7bW34eb/Ou9/6gLaGc8h7MbK37ESjyBTT29tU+F+Xbs3lizBpfhr7adLqDAnN+Y/Fa5+6ueIO1pS/Esjm0MxPvX9QG6pM7MYO5juGrYbiaEW4yncV5j3UnIZhfU9tBuiBf2qhkxcNGELx53Zl/GaTUp5y/eWzhPbaDL8WhN/hqH4ZcZAsXUAfgM2Xx0BgK5RW2g13Fyjd2JO2YMMzCXvJScFj2Ji7uAPsWhNXgUPpgTUEKWLB6tw9FdQD9hjxrcE3meh1J+vinDP2DvLqCfG7ENWJ7noeSn7/sAfYJlNfFIfDgPGhxXWX5syJ7BhQVxM+6dE1DKxw1l+2Fc3RWy5rXfWN5KjGep5Lj12LeMpualLm7RsMT4JRLj6KEhxXVauJdwZhnJkcjRWNCwWpackAI60I24f1oK7ITVuLRsJTsfU9d+JFAGs/CKBkR2dW2jzZiULy3JU9WSDNbegnvahrqqfXqY53FOY8FveKAOet9zNWg/bkXy2kBpR+4etqtRDVpcnDPU9FRs/FFtQ25HU3nhQVUs02YsR6p5s0H7FddjVZeL+7SwZ1XnuKRhpFnn8tJ0BSmao/Ru1awU1k71AcriXavBClwUoLuQUOT7KDvvV5F+sc/B6wsUW6n8aWGjhPLwRmeQ33JrkrvyNygN/Zt4ddICvbVA7c2+XS3voGD2ccbQOdMC/V23JeHL96k1DVDCcy7inZlpa4FmFqL2TiYFuq1uV5LaTEI0DVBahI/bf1tmFqsyNImHZv3uqW/Z/xPoH95OjSUy92gTAAAAAElFTkSuQmCC alt="Comentário" class="comment-button" data-post-id="' + post.postID + '">' +
-                '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAX5JREFUWEft1LFKHFEUxvHfFmIvWOgrqE0KsTCJD2GVRpskBNKkSNokZcA2gtpoIT5DKo2GkKRJEfIGEgMBX0AlcmAWlmFn79xZRlaY2wzLuee7//t9d0/PhK3ehPHogFKJdA51DqUcSNXv5Rt6Wtxqb8jt/qduXKp/xzrOq/pSDq3grGh+iG8loVygaH+NrSZAs/iN+Mb6h4Xi29drAvQe73KBpvAFy6XGH1jFVWZUAfC26GkEtINnFYfu4vldAm1gP3HgJg4yoBo7FBFFVBHZqBWRRXQRYZ3VGChimh84YQ2Pi9+fcTJQ+4OIr85qDFQWry2UoKqtk5pDtYUmHahx9G05FBP+tMmfoy2gSPAFtnPHR5tAwXKIJxVQH/GyXGsbaBpf8aB0cMy6GCk34wDVmTf9PYMXjbn2CzNF8QKLuBwmmHLoDT7kkBR7y7qPcIxrxIP/WaWZAlrCJ8xlQg3TfYW/OBqllQLK5Bh/eweU8rBzqHMo5UCq3r2hlEO36T9QJaLRJvIAAAAASUVORK5CYII=" alt="Comment">' +
-                '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAsVJREFUWEft1zvoFUcUx/HPXxE02gmJiiii4IMUQQiWFimioBYq+EDFJGohiCZaaAxYGDVBfIIIim9FEFEhAa0kpRZ2ivGBSkJAAlYJCYLRcP7Myrrs3t37+MO/8MDlwsxvZr5zzsyZs30GmfUNMh7vgeoi0tRDofsYszACv6bf7xULTMBUTMO/uIV7eNMt0Ic4hAX4oGSy21iKZ6lvMi7i0xLtX/gZG/CiCqyVh+bjFEbX7OpvfIXhOIJRNfo/sQY/lemqgL7DztyA17iEB6ltCpZhSMXiRX2EbwnvXKKt+LE4vgxoDq7nhNewEb8VBsc5CY/MK7RX6Scl/dyc/jPczI8vAg3DI0xMotP4okUIYnycsTgXYQfxdY3+LFYkTaw1Hf9lY4pAX+JE6nyaxC/rbgbWJc2xBtq4pQ8xPmlX4nwV0A18njoDLg71QFh49HCa+CoWVgFFXsnIx+L5QNCkHBW5LOw+ZlQB/ZMSX/QPRdyWgbCPcpuNTcfm+614hv7AuNQXB7t4s3oFNxN30mSRweMVKAX6BbNT3yqc6xVBYZ4t2JvarmBRFdB2fJ867+KT/JXsEdxIPMaYNF/c0ONVQBHLJ+kZCE0IsyvdI55+r2d5KN60SJjxzpWGLBq/xa7c6nXJrh3QA9iUG7AaZ/ITVL1lxYH7sbmdlUu0+/BNrn034oi8Y61e+8i6a3vkqeIGj2J92QbrCrReQDWGCcA6oNB0A1WEOZlqp8roNwEqg/oB22rO1B5EzZNZwERh1rKMbQrULlRHME1DlndEMXxlnirCXECUGLUFfidAdZ4qg4knqPEj3U7IWnlqR6qv4z+z8ExbMJ16KFuwGL488OVU1Df2TDa4Uw+1ggqY+FZ7WyfX3MbGmbrpPPHWxVdJWHwqLe8UptuQ5YEXIz6Lok5+1XQnZbpuQ9bN2qVj3wPVuXTQeeh/xW2FJWAig/cAAAAASUVORK5CYII=" alt="Curtir" class="like-button" data-post-id="' + post.postID + '">' +
-                '</div>' +
-                '</main>' +
-                '<footer>' +
-                '</footer>' +
-                '</div>';
+              '<header>' +
+              '<div class="post-title">' +
+              '<img src="public/images/user-icon.jpg" class="profile-icon">' +
+              '<p id="username-' + post.postID + '">@' + post.createdby + '</p>' +
+              '</div>' +
+              '</header>' +
+              '<main>' +
+              '<div class="post-content">' +
+              '<p>' + post.content + '</p>' +
+              '</div>' +
+              '<div class="post-links">' +
+              '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAACu0lEQVRYR+2WX27aQBDGbUA80xs4J2jyioC6N2huEE7Q5gRNThBuEG5QcoI6gHhNeoL6BuUZ8affF82iZdm114sVJVJWskD2/vnNN7MzE0dvbMRvjCd6/0BpmnY2m00KZb/gOY/juLPb7RJReonfXJ7HZrM5ybKM77yHt0K9Xi/F4T8JgafjfUIUTTD3YTabjX3WlAIRpNFo3EEFggQPGPO8Xq+Hi8XiuWiTQiDA3GCj7xZFMgA+brdbWh+12226iYPuJDhdSJd+Mw/Hutv5fH7jgnICCQxdpI8MB16XWakWdLvdc8QRDboy9hnBhdc2KCuQBaYSiHmQgNE4XbExoIbm3CMgCd5fmptGsPK26m2xWd/v9+/w/of6Bvd9hfsyfe4R0GAweNICeAIrLl3+DnkPKBqrlFpi/09OIFHnt0xYQpmzOpTRD5Q89iSBz0+XgHq5HBwHCoH+XgtAZ+CFKKOvMVx3EEsmENVJZfEB+akQhkoJbutfeZdDoTOXQpyU8KO4K68TRO0lbvunQkOPI1MhTnopC68IFAFoz+F0me1K1qWW5CUGdsSSMp1OL1wu2+eJshR/CpyReA9Si6kQ8wPzBAev/QWufa1xVOnak+IVEqOerXMxet8zuUqHSo5ktNacEJdZauRRarEWVyNB8uwMlgxD3Qc3Me+wuF5phlgTr7P9sEBxr0rZW0BU+6F3mc6CXdigmdVZs+5IagYrv69WqwRqpvj7GQ8vidnuFnYPpS0sc0ar1brXW1g9JUhBZg1MiuKK+Ybr9EJqm18KpBbpbYMCwjv2NoyNoqY/w/cHqDb26Ry8gYwbMhJFzJ55CSVyAPP5w57bt91VhocCmWqfdAv1zeoAqq3FJdgpQMyuw7IgrZpAQ4Fqc5EJHAJUq4uCgeSKs93cN+RV3eEz31shn83qmPMBVKbif1TPbjSKmlVJAAAAAElFTkSuQmCC" alt="Comentário" class="comment-button" data-post-id="' + post.postID + '">' +
+              '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAABrUlEQVRYR+2W7W2DMBCG+VggI7QbJH8RULJBu0GyQTNB0wmaDdoNmg3qCsTfZINkBBZA9D0JIst8HKYgEcn+e9z5ufde29jWzJY9Mx7LAHETMQoZhTgFuPj9eSgIgld0lcVx/KV2h1jBdazEheu6WyHEtS2vUyHP85Yo8IPkRZ7nqzRNz3KhAUCUvkNzB22gKIoI4oTEhzI5A9wjusuqYkOAiqJ4T5JkrwVUwnwi6VmVHN2tNcdk+b6/t237jfIGAaHzD+SSd5rWEVAvOlD/AipNTEBda9tk8raEwUCyiTkFmkw+OhDU2WDGlYktzP0Jm0TlRgKx32pTxOgqaD0tMtxghdQOdQp1KapTp/Me0ik0ayA6GBjvQhpv79FPohCUjeAxuuG5RZcsndjjDX4sqdU6UIku1W+GqPaMTKJQBQEouu03LVAHKLNTY5MC0WZhGJ7gp6W8McZ5dhxnLb+L2iPjzCDH0fmt0fJdvCBemZwe6VXbL0inQj2fkRqrDERByeQ1E2uNrOEXpJdQKhAl0StAKnG3+/39wvaSZMSPjEKcmEYhoxCnABefnYf+AGy7CDSivNhoAAAAAElFTkSuQmCC" alt="Comment">' +
+              '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAACUElEQVRYR+2X3W3CMBDHiWAAugFsAK8IUNigbAAblAlaJigbNBuUDRoB4hU2KCOwAKL3j86Vc3Fix84DD1jqQ+Pz3e8+baLWg63owXhaTyBbRpwjFMdx93a7xVDYbrfPaZpeqpSTfI/kB/f7/drpdCB/tcFgvxKIId5J7pX+egaFCcGtlDFNfkGyXSEPoK0ubwIsBRqPx3EURV8lIFLXkj98GkCkLMBW+/0+cQYimA+CQWT0BUUpGxw4Gj6zApM8oDYSqhCh0Wg0oLD+KIMEdqY6WNPhrX6Y5b5lBOvIU40Nj8ejgs7U54C4BmAkZuPI+bKqICeTCdK6YPkNya8t8tCPmsS6kKN93dEcECmHIA5gXcmDmfRAhhj/87kuwWxt3cRO/2opz6UuByRqZ0P0KxNA6DdhJyE7qinyKSNP9XDOZd2EgqjzeiZQc7vdbqj2ZMoQyh42Kfx92/DzBeShCVtZaZDjL2VA6K4Ym9RZs8PhkPoarTrHHXqCjC1CGGxvrMw4J5oApJTBBmxh5Wq1sssobcOm02bosqU+tQuDcTqdnihdmKxYWxKeNxEVpUM0zoWd/r94C0Ci4AohDYETQ9RYp8bLlQ7qtdQIlISRtWPsMt17VwUuETPpKrtiKt9DTUDVgcnGgM3DEKi6ME5AEPKB8oFxBqoL5QtTC8gVKgSmNpANKhTGC6gMir7jV8ZCaxLr69HUUNYuK+tCQzR0US8Y7whp95L+nlafvWGCgQzpC4JpBIihsjcUXQeJ7ZFvG8TeNWRT7Lv/BLJF7uEi9AesB1Q04shzcgAAAABJRU5ErkJggg==" alt="Curtir" class="like-button" data-post-id="' + post.postID + '">' +
+              '</div>' +
+              '</main>' +
+              '<footer>' +
+              '</footer>' +
+              '</div>';
       
               var $post = $(postHTML);
               $post.find(".like-button").on("click", function() {
