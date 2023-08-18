@@ -5,16 +5,20 @@ import (
 	"log"
 	"net/http"
 	CON "social-network-go/pkg/config"
+	"social-network-go/pkg/config/err"
 	"social-network-go/pkg/utils"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 type User struct {
 	ID       int    `json:"user-id"`
+	Name     string `json:"name"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
+	Bio      string `json:"bio"`
 }
 
 type Post struct {
@@ -23,6 +27,47 @@ type Post struct {
 	UserID     int    `json:"user-id"`
 	Content    string `json:"content"`
 	CreatedBy  string `json:"createdby"`
+}
+
+func CreateProfile(c *gin.Context) {
+	var user User
+	name := strings.TrimSpace(c.PostForm("name"))
+	bio := strings.TrimSpace(c.PostForm("bio"))
+
+	resp := err.ErrorResponse{
+		Error: make(map[string]string),
+	}
+
+	if name == "" {
+		resp.Error["name"] = "Some values are missing!"
+	}
+	if len(name) < 1 || len(name) > 64 {
+		resp.Error["name"] = "Name should be between 1 and 64"
+	}
+	if len(bio) > 120 {
+		resp.Error["bio"] = "bio should be 120"
+	}
+
+	db := CON.DB()
+
+	user.Name = name
+	user.Bio = bio
+
+	query := "INSERT INTO user1 (name, bio) VALUES (?, ?)"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = stmt.Exec(user.Name, user.Bio)
+	if err != nil {
+		log.Println("Error executing SQL statement:", err)
+		c.JSON(500, gin.H{"error": "Failed to create user"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Profile created successfully"})
+
 }
 
 func AnotherUserProfile(c *gin.Context) {
