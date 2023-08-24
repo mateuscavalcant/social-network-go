@@ -31,12 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("signup-form").addEventListener("submit", function(event) {
         event.preventDefault();
         var username= document.getElementById("username").value;
+        var name= document.getElementById("name").value;
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirm_password").value;
             
         var formData = new FormData();
         formData.append("username", username);
+        formData.append("name", name);
         formData.append("email", email);
         formData.append("password", password);
         formData.append("confirm_password", confirmPassword);
@@ -51,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (data.error) {
                 // Exibe as mensagens de erro correspondentes nos campos do formulário
                 document.getElementById("error-username").textContent = data.error.username;
+                document.getElementById("error-name").textContent = data.error.name;
                 document.getElementById("error-email").textContent = data.error.email;
                 document.getElementById("error-password").textContent = data.error.password;
                 document.getElementById("error-confirm-password").textContent = data.error.confirm_password;
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log(data.message);
                 
                 // Redirecionamento manual para /create-post
-                window.location.href = "/login";
+                window.location.href = "/home";
             }
         })
         .catch(error => {

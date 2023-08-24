@@ -18,20 +18,31 @@ func Feed(c *gin.Context) {
 	db := CON.DB()
 
 	type Post struct {
-		PostID     int    `json:"post-id"`
-		PostUserID int    `json:"post-user-id"`
-		UserID     int    `json:"user-id"`
-		Content    string `json:"content"`
-		CreatedBy  string `json:"createdby"`
+		PostID            int    `json:"post-id"`
+		PostUserID        int    `json:"post-user-id"`
+		UserID            int    `json:"user-id"`
+		Content           string `json:"content"`
+		CreatedByUsername string `json:"createdby"`
+		CreatedByName     string `json:"createdbyname"`
 	}
 	var post Post
 	post.UserID = id
 
 	posts := []Post{}
 
-	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id"
+	query := `
+		SELECT user_post.post_id, user_post.id AS post_user_id, user_post.content,
+		       user1.id AS user_id, user1.username, user1.name
+		FROM user_post
+		JOIN user1 ON user1.id = user_post.id
+		WHERE user1.id = ? OR user1.id IN (
+		    SELECT user_follow.followTo
+		    FROM user_follow
+		    WHERE user_follow.followBy = ?
+		)
+	`
 
-	rows, err := db.Query(query)
+	rows, err := db.Query(query, id, id)
 	if err != nil {
 		log.Println("Failed to query statement", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -42,7 +53,7 @@ func Feed(c *gin.Context) {
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
+		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedByUsername, &post.CreatedByName)
 		if err != nil {
 			log.Println("Failed to scan statement", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -50,7 +61,7 @@ func Feed(c *gin.Context) {
 			})
 			return
 		}
-		log.Println("CreatedBy:", post.CreatedBy)
+		log.Println("CreatedBy:", post.CreatedByUsername)
 
 		posts = append(posts, post)
 	}

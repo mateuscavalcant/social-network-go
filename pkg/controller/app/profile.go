@@ -14,11 +14,15 @@ import (
 )
 
 type User struct {
-	ID       int    `json:"user-id"`
-	Name     string `json:"name"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Bio      string `json:"bio"`
+	ID            int    `json:"user-id"`
+	Name          string `json:"name"`
+	Username      string `json:"username"`
+	Email         string `json:"email"`
+	Bio           string `json:"bio"`
+	Posts         int    `json:"countposts"`
+	FollowBy      bool   `json:"followby"`
+	FollowByCount int    `json:"followbycount"`
+	FollowToCount int    `json:"followtocount"`
 }
 
 type Post struct {
@@ -27,6 +31,7 @@ type Post struct {
 	UserID     int    `json:"user-id"`
 	Content    string `json:"content"`
 	CreatedBy  string `json:"createdby"`
+	Name       string `json:"createdbyname"`
 }
 
 func CreateProfile(c *gin.Context) {
@@ -100,8 +105,26 @@ func AnotherUserProfile(c *gin.Context) {
 
 	if id == targetUserID {
 		var user User
-		queryUser := "SELECT username, email FROM user1 WHERE id = ?"
-		errUser := db.QueryRow(queryUser, id).Scan(&user.Username, &user.Email)
+		queryUser := `
+		SELECT
+			user1.username, user1.name, user1.bio,
+			IFNULL(follower_counts.follower_count, 0) AS follower_count,
+			IFNULL(followed_counts.following_count, 0) AS following_count
+		FROM user1
+		LEFT JOIN (
+			SELECT followTo, COUNT(followBy) AS follower_count
+			FROM user_follow
+			GROUP BY followTo
+		) AS follower_counts ON follower_counts.followTo = user1.id
+		LEFT JOIN (
+			SELECT followBy, COUNT(followTo) AS following_count
+			FROM user_follow
+			GROUP BY followBy
+		) AS followed_counts ON followed_counts.followBy = user1.id
+		WHERE user1.id = ?
+	`
+
+		errUser := db.QueryRow(queryUser, id).Scan(&user.Username, &user.Name, &user.Bio, &user.FollowByCount, &user.FollowToCount)
 		if errUser != nil {
 			if errUser == sql.ErrNoRows {
 				c.JSON(http.StatusNotFound, gin.H{
@@ -118,7 +141,7 @@ func AnotherUserProfile(c *gin.Context) {
 
 		posts := []Post{}
 
-		query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
+		query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username, user1.name FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
 
 		rows, err := db.Query(query, id)
 		if err != nil {
@@ -131,7 +154,7 @@ func AnotherUserProfile(c *gin.Context) {
 		defer rows.Close()
 
 		for rows.Next() {
-			err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
+			err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy, &post.Name)
 			if err != nil {
 				log.Println("Failed to scan statement", err)
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -139,7 +162,8 @@ func AnotherUserProfile(c *gin.Context) {
 				})
 				return
 			}
-			log.Println("CreatedBy:", post.CreatedBy)
+			log.Println("@", post.CreatedBy)
+			log.Println("Name:", post.Name)
 
 			posts = append(posts, post)
 		}
@@ -151,6 +175,21 @@ func AnotherUserProfile(c *gin.Context) {
 			})
 			return
 		}
+		countPosts := len(posts)
+		user.Posts = countPosts
+
+		log.Println("Count Posts:", user.Posts)
+
+		// Consulta para verificar se o usuário atual está seguindo o usuário-alvo
+		queryFollow := "SELECT COUNT(*) FROM user_follow WHERE followBy = ? AND followTo = ?"
+		var followCount int
+		errFollow := db.QueryRow(queryFollow, id, targetUserID).Scan(&followCount)
+		if errFollow != nil {
+			log.Println("Failed to check follow status:", errFollow)
+			// Trate o erro, se necessário
+		}
+
+		user.FollowBy = followCount > 0
 
 		c.JSON(http.StatusOK, gin.H{
 			"profile": user,
@@ -159,8 +198,25 @@ func AnotherUserProfile(c *gin.Context) {
 
 	} else {
 		var user User
-		queryUser := "SELECT username, email FROM user1 WHERE id = ?"
-		errUser := db.QueryRow(queryUser, targetUserID).Scan(&user.Username, &user.Email)
+		queryUser := `
+		SELECT
+			user1.username, user1.name, user1.bio,
+			IFNULL(follower_counts.follower_count, 0) AS follower_count,
+			IFNULL(followed_counts.following_count, 0) AS following_count
+		FROM user1
+		LEFT JOIN (
+			SELECT followTo, COUNT(followBy) AS follower_count
+			FROM user_follow
+			GROUP BY followTo
+		) AS follower_counts ON follower_counts.followTo = user1.id
+		LEFT JOIN (
+			SELECT followBy, COUNT(followTo) AS following_count
+			FROM user_follow
+			GROUP BY followBy
+		) AS followed_counts ON followed_counts.followBy = user1.id
+		WHERE user1.id = ?
+	`
+		errUser := db.QueryRow(queryUser, targetUserID).Scan(&user.Username, &user.Name, &user.Bio, &user.FollowByCount, &user.FollowToCount)
 		if errUser != nil {
 			if errUser == sql.ErrNoRows {
 				c.JSON(http.StatusNotFound, gin.H{
@@ -176,7 +232,7 @@ func AnotherUserProfile(c *gin.Context) {
 		}
 		targetUserPosts := []Post{}
 
-		targetUserPostsQuery := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
+		targetUserPostsQuery := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username, user1.name FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
 
 		rowsTargetUserPosts, err := db.Query(targetUserPostsQuery, targetUserID)
 		if err != nil {
@@ -189,7 +245,7 @@ func AnotherUserProfile(c *gin.Context) {
 		defer rowsTargetUserPosts.Close()
 
 		for rowsTargetUserPosts.Next() {
-			err := rowsTargetUserPosts.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
+			err := rowsTargetUserPosts.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy, &post.Name)
 			if err != nil {
 				log.Println("Failed to scan target user post", err)
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -197,7 +253,8 @@ func AnotherUserProfile(c *gin.Context) {
 				})
 				return
 			}
-			log.Println("CreatedBy (Target User Post):", post.CreatedBy)
+			log.Println("@", post.CreatedBy)
+			log.Println("Name:", post.Name)
 
 			targetUserPosts = append(targetUserPosts, post)
 		}
@@ -209,6 +266,22 @@ func AnotherUserProfile(c *gin.Context) {
 			})
 			return
 		}
+		countPosts := len(targetUserPosts)
+		user.Posts = countPosts
+
+		log.Println("Count Posts:", user.Posts)
+
+		// Consulta para verificar se o usuário atual está seguindo o usuário-alvo
+		queryFollow := "SELECT COUNT(*) FROM user_follow WHERE followBy = ? AND followTo = ?"
+		var followCount int
+		errFollow := db.QueryRow(queryFollow, id, targetUserID).Scan(&followCount)
+		if errFollow != nil {
+			log.Println("Failed to check follow status:", errFollow)
+			// Trate o erro, se necessário
+		}
+
+		// Se followCount for maior que 0, o usuário atual está seguindo o usuário-alvo
+		user.FollowBy = followCount > 0
 
 		// Retorne o perfil público do usuário alvo com seus posts públicos
 		c.JSON(http.StatusOK, gin.H{
@@ -229,8 +302,26 @@ func Profile(c *gin.Context) {
 
 	// Fetch user information
 	var user User
-	queryUser := "SELECT username, email FROM user1 WHERE id = ?"
-	err := db.QueryRow(queryUser, id).Scan(&user.Username, &user.Email)
+	queryUser := `
+	SELECT
+		user1.username, user1.name, user1.bio,
+		IFNULL(follower_counts.follower_count, 0) AS follower_count,
+		IFNULL(followed_counts.following_count, 0) AS following_count
+	FROM user1
+	LEFT JOIN (
+		SELECT followTo, COUNT(followBy) AS follower_count
+		FROM user_follow
+		GROUP BY followTo
+	) AS follower_counts ON follower_counts.followTo = user1.id
+	LEFT JOIN (
+		SELECT followBy, COUNT(followTo) AS following_count
+		FROM user_follow
+		GROUP BY followBy
+	) AS followed_counts ON followed_counts.followBy = user1.id
+	WHERE user1.id = ?
+`
+
+	err := db.QueryRow(queryUser, id).Scan(&user.Username, &user.Name, &user.Bio, &user.FollowByCount, &user.FollowToCount)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusNotFound, gin.H{
@@ -247,7 +338,7 @@ func Profile(c *gin.Context) {
 
 	posts := []Post{}
 
-	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
+	query := "SELECT user_post.post_id, user_post.id AS user_post_id, user_post.content, user1.id AS user1_id, user1.username, user1.name FROM user_post JOIN user1 ON user1.id = user_post.id WHERE user1.id = ?"
 
 	rows, err := db.Query(query, id)
 	if err != nil {
@@ -261,7 +352,7 @@ func Profile(c *gin.Context) {
 
 	for rows.Next() {
 
-		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy)
+		err := rows.Scan(&post.PostID, &post.PostUserID, &post.Content, &post.UserID, &post.CreatedBy, &post.Name)
 		if err != nil {
 			log.Println("Failed to scan statement", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -269,7 +360,8 @@ func Profile(c *gin.Context) {
 			})
 			return
 		}
-		log.Println("CreatedBy:", post.CreatedBy)
+		log.Println("@", post.CreatedBy)
+		log.Println("Name:", post.Name)
 
 		posts = append(posts, post)
 	}
@@ -281,6 +373,10 @@ func Profile(c *gin.Context) {
 		})
 		return
 	}
+	countPosts := len(posts)
+	user.Posts = countPosts
+
+	log.Println("Count Posts:", user.Posts)
 
 	c.JSON(http.StatusOK, gin.H{
 		"profile": user,

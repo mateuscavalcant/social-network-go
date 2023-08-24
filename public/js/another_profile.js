@@ -4,8 +4,24 @@ function loadProfile(username) {
       url: "/profile/" + username,
       method: "GET",
       success: function(response) {
+        var userHeaderDetailsHTML = '<div class="name">' +
+              '<header>' +
+              '<div class="user-name">' +
+              '<p>' + response.profile.name + '</p>' +
+              '</div>' +
+              '<div class="posts-count">' + // Abertura da div para o contador de posts
+              '<p>' + response.profile.countposts + ' posts</p>' + // Adicione o contador de posts aqui
+              '</div>' + // Fechamento da div para o contador de posts
+              '</header>' +
+              '<main>' +
+              '</main>' +
+              '</div>';
+          
+            var $userHeaderDetails = $(userHeaderDetailsHTML);
+            $("#profile-header-container").append($userHeaderDetails);
         
           // Exibir os detalhes do perfil do usuário
+        if (response.profile.followby) {
           var userDetailsHTML = '<div class="user">' +
           '<header>' +
           
@@ -13,26 +29,110 @@ function loadProfile(username) {
           '<div class="user-title">' +
           '<p>@' + response.profile.username + '</p>' +
           '</div>' +
+          '<div class="user-bio">' +
+          '<p>' + response.profile.bio + '</p>' +
+          '</div>' +
           '</header>' +
-          '<div class="create-btn">' +
           '<main>' +
-          '<button id="follow-btn">Follow</button>' +
+          '<div class="user-followby">' +
+          '<p>' + response.profile.followbycount + '</p>' +
+          '<p id="followers-name">Followers</p>' +
+          '</div>' +
+          '<div class="user-followto">' +
+          '<p>' + response.profile.followtocount + ' </p>' +
+          '<p id="following-name">Following</p>' +
           '</div>' +
           '</main>' +
-          '</div>';
+          '<footer>' +
+          '<div class="create-btn">' +
           
+          '<button id="following-btn">Following</button>' +
+          '<button id="follow-btn" style="display: none;">Follow</button>' +
+          '</div>' +
+          '</footer>' +
+          '</div>';
+        var $userDetails = $(userDetailsHTML);
+        $("#user-profile-container").append($userDetails);
+      } else {
+        var userDetailsHTML = '<div class="user">' +
+          '<header>' +
+          
+          '<img src="public/images/user-icon.jpg" class="user-icon">' +
+          '<div class="user-title">' +
+          '<p>@' + response.profile.username + '</p>' +
+          '</div>' +
+          '<div class="user-bio">' +
+          '<p>' + response.profile.bio + '</p>' +
+          '</div>' +
+          '</header>' +
+          '<main>' +
+          '<div class="user-followby">' +
+          '<p>' + response.profile.followbycount + '</p>' +
+          '<p id="followers-name">Followers</p>' +
+          '</div>' +
+          '<div class="user-followto">' +
+          '<p>' + response.profile.followtocount + ' </p>' +
+          '<p id="following-name">Following</p>' +
+          '</div>' +
+          '</main>' +
+          '<footer>' +
+          '<div class="create-btn">' +
+          
+          '<button id="follow-btn">Follow</button>' +
+          '<button id="following-btn" style="display: none;">Following</button>' +
+          '</div>' +
+          '</footer>' +
+          '</div>';
 
-      var $userDetails = $(userDetailsHTML);
-      $("#user-profile-container").append($userDetails);
+          var $userDetails = $(userDetailsHTML);
+          $(document).ready(function() {
+            // Function to handle the Follow button click event
+            $("#follow-btn").click(function() {
+              // Disable the button while the request is being processed
+              $("#follow-btn").prop("disabled", true);
+              var pathParts = window.location.pathname.split("/"); // Divide a URL em partes
+              var user_follow_to = pathParts[pathParts.length - 1]; // O último elemento deve ser o nome de usuário
+            
+              // Perform AJAX request to follow the user
+              $.ajax({
+                type: "POST",
+                url: "/follow", // Replace with the actual endpoint to perform the follow action
+                data: {
+                  username: user_follow_to, // Replace with the user ID you want to follow
+                },
+                success: function(response) {
+                  $("#follow-btn").hide();
+                  $("#following-btn").show();
+                  
+                  $("#follow-btn").text("Following").prop("disabled", false);
+                  console.log("Followed successfully:", response);
+                },
+                error: function() {
+                  // Re-enable the button in case of an error
+                  $("#follow-btn").prop("disabled", false);
+                  console.log("Error following user");
+                }
+              });
+            });
+          });
+        
+        $("#user-profile-container").append($userDetails);
+      }
+
       $("#posts-container").empty();
   
         // Iterar sobre os posts retornados e adicionar na página
         response.posts.forEach(function(post) {
           var postHTML = '<div class="post">' +
           '<header>' +
-          '<div class="post-title">' +
           '<img src="public/images/user-icon.jpg" class="profile-icon">' +
-          '<p id="username-' + post.postID + '">@' + post.createdby + '</p>' +
+          '<div class="post-title">' +
+          '<div class="user-name-post">' +
+          '<p class="name-user' + post.postID + '">' + post.createdbyname + '</p>' +
+          '</div>' +
+          '<div class="user-username">' +
+          '<p class="username-user' + post.postID + '">@' + post.createdby + '</p>' +
+          '</div>' +
           '</div>' +
           '</header>' +
           '<main>' +
@@ -48,7 +148,7 @@ function loadProfile(username) {
           '<footer>' +
           '</footer>' +
           '</div>';
-  
+
   
           var $post = $(postHTML);
           $post.find(".like-button").on("click", function() {
@@ -66,6 +166,9 @@ function loadProfile(username) {
       }
     });
   }
+  
+
+  
 
   function handleHome(event) {
     event.preventDefault();
@@ -81,5 +184,8 @@ function loadProfile(username) {
         loadProfile(username);
 
         $("#home-btn").click(handleHome);
+
+        $("#follow-btn").click(followUser(username))
+
   
       });
