@@ -1,30 +1,24 @@
-
 function loadProfile(username) {
-    $.ajax({
-      url: "/profile/" + username,
-      method: "GET",
-      success: function(response) {
-        var userHeaderDetailsHTML = '<div class="name">' +
-              '<header>' +
-              '<div class="user-name">' +
-              '<p>' + response.profile.name + '</p>' +
-              '</div>' +
-              '<div class="posts-count">' + // Abertura da div para o contador de posts
-              '<p>' + response.profile.countposts + ' posts</p>' + // Adicione o contador de posts aqui
-              '</div>' + // Fechamento da div para o contador de posts
-              '</header>' +
-              '<main>' +
-              '</main>' +
-              '</div>';
-          
-            var $userHeaderDetails = $(userHeaderDetailsHTML);
-            $("#profile-header-container").append($userHeaderDetails);
-        
-          // Exibir os detalhes do perfil do usuário
-        if (response.profile.followby) {
-          var userDetailsHTML = '<div class="user">' +
+  $.ajax({
+    url: "/profile/" + username,
+    method: "GET",
+    success: function (response) {
+      var userHeaderDetailsHTML = '<div class="name">' +
+        '<header>' +
+        '<div class="user-name">' +
+        '<p>' + response.profile.name + '</p>' +
+        '</div>' +
+        '<div class="posts-count">' + 
+        '<p>' + response.profile.countposts + ' posts</p>' + 
+        '</div>' + 
+        '<main>' +
+        '</main>' +
+        '</div>';
+      var $userHeaderDetails = $(userHeaderDetailsHTML);
+      $("#profile-header-container").append($userHeaderDetails);
+      if (response.profile.followby) {
+        var userDetailsHTML = '<div class="user">' +
           '<header>' +
-          
           '<img src="public/images/golang-icon2.jpeg" class="user-icon">' +
           '<div class="user-title">' +
           '<p>@' + response.profile.username + '</p>' +
@@ -45,37 +39,31 @@ function loadProfile(username) {
           '</main>' +
           '<footer>' +
           '<div class="create-btn">' +
-          
           '<button id="following-btn">Following</button>' +
           '<button id="follow-btn" style="display: none;">Follow</button>' +
           '</div>' +
           '</footer>' +
           '</div>';
         var $userDetails = $(userDetailsHTML);
-        $(document).ready(function() {
-          // Function to handle the Follow button click event
-          $("#following-btn").click(function() {
-            // Disable the button while the request is being processed
+        $(document).ready(function () {
+          $("#following-btn").click(function () {
             $("#following-btn").prop("disabled", true);
-            var pathParts = window.location.pathname.split("/"); // Divide a URL em partes
-            var user_follow_to = pathParts[pathParts.length - 1]; // O último elemento deve ser o nome de usuário
-          
-            // Perform AJAX request to follow the user
+            var pathParts = window.location.pathname.split("/");
+            var user_follow_to = pathParts[pathParts.length - 1]; 
             $.ajax({
               type: "POST",
-              url: "/unfollow", // Replace with the actual endpoint to perform the follow action
+              url: "/unfollow",
               data: {
-                username: user_follow_to, // Replace with the user ID you want to follow
+                username: user_follow_to, 
               },
-              success: function(response) {
+              success: function (response) {
                 $("#following-btn").hide();
                 $("#follow-btn").show();
-                
+
                 $("#following-btn").text("Follow").prop("disabled", false);
                 console.log("Unfollowed successfully:", response);
               },
-              error: function() {
-                // Re-enable the button in case of an error
+              error: function () {
                 $("#follow-btn").prop("disabled", false);
                 console.log("Error following user");
               }
@@ -86,7 +74,6 @@ function loadProfile(username) {
       } else {
         var userDetailsHTML = '<div class="user">' +
           '<header>' +
-          
           '<img src="public/images/golang-icon2.jpeg" class="user-icon">' +
           '<div class="user-title">' +
           '<p>@' + response.profile.username + '</p>' +
@@ -107,53 +94,43 @@ function loadProfile(username) {
           '</main>' +
           '<footer>' +
           '<div class="create-btn">' +
-          
           '<button id="follow-btn">Follow</button>' +
           '<button id="following-btn" style="display: none;">Following</button>' +
           '</div>' +
           '</footer>' +
           '</div>';
+        var $userDetails = $(userDetailsHTML);
+        $(document).ready(function () {
+          $("#follow-btn").click(function () {
+            $("#follow-btn").prop("disabled", true);
+            var pathParts = window.location.pathname.split("/"); 
+            var user_follow_to = pathParts[pathParts.length - 1]; 
 
-          var $userDetails = $(userDetailsHTML);
-          $(document).ready(function() {
-            // Function to handle the Follow button click event
-            $("#follow-btn").click(function() {
-              // Disable the button while the request is being processed
-              $("#follow-btn").prop("disabled", true);
-              var pathParts = window.location.pathname.split("/"); // Divide a URL em partes
-              var user_follow_to = pathParts[pathParts.length - 1]; // O último elemento deve ser o nome de usuário
-            
-              // Perform AJAX request to follow the user
-              $.ajax({
-                type: "POST",
-                url: "/follow", // Replace with the actual endpoint to perform the follow action
-                data: {
-                  username: user_follow_to, // Replace with the user ID you want to follow
-                },
-                success: function(response) {
-                  $("#follow-btn").hide();
-                  $("#following-btn").show();
-                  
-                  $("#follow-btn").text("Following").prop("disabled", false);
-                  console.log("Followed successfully:", response);
-                },
-                error: function() {
-                  // Re-enable the button in case of an error
-                  $("#follow-btn").prop("disabled", false);
-                  console.log("Error following user");
-                }
-              });
+            $.ajax({
+              type: "POST",
+              url: "/follow", 
+              data: {
+                username: user_follow_to, 
+              },
+              success: function (response) {
+                $("#follow-btn").hide();
+                $("#following-btn").show();
+
+                $("#follow-btn").text("Following").prop("disabled", false);
+                console.log("Followed successfully:", response);
+              },
+              error: function () {
+                $("#follow-btn").prop("disabled", false);
+                console.log("Error following user");
+              }
             });
           });
-        
+        });
         $("#user-profile-container").append($userDetails);
       }
-
       $("#posts-container").empty();
-  
-        // Iterar sobre os posts retornados e adicionar na página
-        response.posts.forEach(function(post) {
-          var postHTML = '<div class="post">' +
+      response.posts.forEach(function (post) {
+        var postHTML = '<div class="post">' +
           '<header>' +
           '<img src="public/images/golang-icon2.jpeg" class="profile-icon">' +
           '<div class="post-title">' +
@@ -178,44 +155,35 @@ function loadProfile(username) {
           '<footer>' +
           '</footer>' +
           '</div>';
-
-  
-          var $post = $(postHTML);
-          $post.find(".like-button").on("click", function() {
-            var postID = $(this).data("post-id");
-            // Alterar a imagem para a nova imagem de curtida
-            $(this).attr("src", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAnBJREFUWEft1t+rDGEYB/Dvd3Zn2yNhZ6ToJEWhzp2kKMyk5IILbtwoodw4F4oSLpQokRJulKSUC8UFyc3Z2Vw5f8CpLTdbpyS1s3I4aubsPNpTK2fNj3f2naOjzl7O+7zP83mf931nh1hiPy4xD5ZBWTui1CEB2KnsHRMp7zKAEQqb3bmwaeP9dFwBH3s2GuXqVqFsi4CfZPShFjSmCIgWaAa714Vm9Z4AR0isGEwmIpNGKMdraLR6Y1/hbu6aeE5iZ0zsDME35ZDjqzDRToIldsgvuYdh4AkIO21VIvIdxGlDUI2AhyRXpsfjCyOcsbr113FxsaBO2b0qBq5ntVdrPIouWXONW4M5/gL5JfcQSnirVUxxshHJgTVz3sSf4QtAgh2mX1ndIrBBMadmmLRqwdotxItuP9ECUMd0Tgn5WLNKzunRCStoPIsFtSvOO4IHc2bUChfglR3UjyaBpgmOalXIOVkgTTvwtseDTGeW5EjOnFrhAvlsB976pA59Ivh7UKuS6mSRKSv0xmJBvuk0QO5TzVVEnEBe2oF3LP6W/YsX4sAqROSsHXqP4rcM+0dh8iPJahGrz8wh0pFwdpONyW+xoN5Dv+xchsEbmckKCKBEJ2th42nim7o/0DaduyTPF1AzJYXctALvymBA8r+96d4HcW5RUIIHVlgfj8ud+oHmLwYqBdMDZn4xForKwCiB5g96EZ1SwCiDtFGKmFwgDdQdK6hfVL0cmWdoMJFfcW8DuKBYIBcmd4f6CEVUbszQoPntS+/UUBgtUApqaIw2KAalhSkE1EcJ8MMO6tcUD3tiWO5bplswa/4y6L/r0C89QuAlNQSzNwAAAABJRU5ErkJggg==");
-            
-          });
-  
-          $("#posts-container").prepend($post);
+        var $post = $(postHTML);
+        $post.find(".like-button").on("click", function () {
+          var postID = $(this).data("post-id");
+          // Alterar a imagem para a nova imagem de curtida
+          $(this).attr("src", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAnBJREFUWEft1t+rDGEYB/Dvd3Zn2yNhZ6ToJEWhzp2kKMyk5IILbtwoodw4F4oSLpQokRJulKSUC8UFyc3Z2Vw5f8CpLTdbpyS1s3I4aubsPNpTK2fNj3f2naOjzl7O+7zP83mf931nh1hiPy4xD5ZBWTui1CEB2KnsHRMp7zKAEQqb3bmwaeP9dFwBH3s2GuXqVqFsi4CfZPShFjSmCIgWaAa714Vm9Z4AR0isGEwmIpNGKMdraLR6Y1/hbu6aeE5iZ0zsDME35ZDjqzDRToIldsgvuYdh4AkIO21VIvIdxGlDUI2AhyRXpsfjCyOcsbr113FxsaBO2b0qBq5ntVdrPIouWXONW4M5/gL5JfcQSnirVUxxshHJgTVz3sSf4QtAgh2mX1ndIrBBMadmmLRqwdotxItuP9ECUMd0Tgn5WLNKzunRCStoPIsFtSvOO4IHc2bUChfglR3UjyaBpgmOalXIOVkgTTvwtseDTGeW5EjOnFrhAvlsB976pA59Ivh7UKuS6mSRKSv0xmJBvuk0QO5TzVVEnEBe2oF3LP6W/YsX4sAqROSsHXqP4rcM+0dh8iPJahGrz8wh0pFwdpONyW+xoN5Dv+xchsEbmckKCKBEJ2th42nim7o/0DaduyTPF1AzJYXctALvymBA8r+96d4HcW5RUIIHVlgfj8ud+oHmLwYqBdMDZn4xForKwCiB5g96EZ1SwCiDtFGKmFwgDdQdK6hfVL0cmWdoMJFfcW8DuKBYIBcmd4f6CEVUbszQoPntS+/UUBgtUApqaIw2KAalhSkE1EcJ8MMO6tcUD3tiWO5bplswa/4y6L/r0C89QuAlNQSzNwAAAABJRU5ErkJggg==");
         });
-      },
-      error: function(xhr, status, error) {
-        console.error(error);
-      }
-    });
-  }
-  
-
-  
-
-  function handleHome(event) {
-    event.preventDefault();
-  
-        window.location.replace("/home");
-  }
-  
- 
-      $(document).ready(function() {
-        var pathParts = window.location.pathname.split("/"); // Divide a URL em partes
-        var username = pathParts[pathParts.length - 1]; // O último elemento deve ser o nome de usuário
-  
-        loadProfile(username);
-
-        $("#home-btn").click(handleHome);
-
-        $("#follow-btn").click(followUser(username))
-
-  
+        $("#posts-container").prepend($post);
       });
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    }
+  });
+}
+
+function handleHome(event) {
+  event.preventDefault();
+
+  window.location.replace("/home");
+}
+
+$(document).ready(function () {
+  var pathParts = window.location.pathname.split("/"); 
+  var username = pathParts[pathParts.length - 1]; 
+  loadProfile(username);
+
+  $("#home-btn").click(handleHome);
+
+  $("#follow-btn").click(followUser(username))
+
+
+});
