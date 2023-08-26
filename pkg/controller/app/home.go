@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	CON "social-network-go/pkg/config"
+	"social-network-go/pkg/config/err"
 	"social-network-go/pkg/models"
 	"social-network-go/pkg/utils"
 	"strconv"
@@ -14,6 +15,9 @@ import (
 
 func CreateNewPost(c *gin.Context) {
 	var user models.Post
+	errresp := err.ErrorResponse{
+		Error: make(map[string]string),
+	}
 
 	content := strings.TrimSpace(c.PostForm("content"))
 	idInterface, _ := utils.AllSessions(c)
@@ -22,6 +26,15 @@ func CreateNewPost(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Unauthorized",
 		})
+		return
+	}
+
+	if content == "" {
+		errresp.Error["content"] = "Values are missing!"
+
+	}
+	if len(errresp.Error) > 0 {
+		c.JSON(400, errresp)
 		return
 	}
 

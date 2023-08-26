@@ -4,17 +4,16 @@ body {
   overflow: auto;
 }
 
-.home-header{
+.home-header {
   border: 1px solid #ccc;
   padding: 10px;
-  width: 600px; /* Ajuste a largura desejada */
-  height: 25px; /* Defina a altura desejada */
+  width: 600px;
+  height: 25px;
   margin-left: 270px;
   margin-right: auto;
   margin-bottom: -1px;
-  overflow: hidden; /* Esconde o conteúdo que extrapola a caixa */
+  overflow: hidden;
 }
-
 
 .header-home-screen {
   display: flex;
@@ -23,14 +22,14 @@ body {
   font-weight: bold;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 18px;
-  margin-top: -18px; /* Ajuste a distância vertical desejada */
+  margin-top: -18px;
   margin-left: 10px;
 }
- /* Estilos para os posts */
- .post {
+
+.post {
   border: 0.3px solid #ccc;
   padding: 10px;
-  width: 600px; /* Ajuste a largura desejada */
+  width: 600px;
   margin-left: 270px;
   margin-right: auto;
   bottom: 50px;
@@ -51,20 +50,20 @@ body {
   margin-top: 10px;
 }
 
-
 .user-username {
-  display: flex; /* Usar flexbox para alinhar o ícone e o texto */
-  align-items: center; /* Centralizar verticalmente */
+  display: flex;
+  align-items: center;
   margin-top: -90px;
   color: #6f6f6f;
-  font-weight:normal;
+  font-weight: normal;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 15px;
 
 }
+
 .user-name {
-  display: flex; /* Usar flexbox para alinhar o ícone e o texto */
-  align-items: center; /* Centralizar verticalmente */
+  display: flex;
+  align-items: center;
   margin-top: -90px;
   margin-right: 4px;
   color: #000000;
@@ -92,76 +91,75 @@ body {
   margin-top: 10px;
 }
 
+.post-links img {
+  margin-right: 80px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 
-  .post-links img {
-    margin-right: 80px;
-    width: 20px; /* Ajuste a largura desejada */
-    height: 20px;
-    cursor: pointer;
-  }
+.post-form-create {
+  height: 105px;
+  width: 620px;
+  margin-left: 270px;
+  margin-right: auto;
+  margin-bottom: 50px;
+  word-wrap: break-word;
+  overflow: auto;
+  display: flex;
+  transform: translateX(-0%);
+  align-items: center;
+  border: 1px solid #ccc;
+  position: relative;
+  z-index: 1;
+}
 
-  /* Estilos para a caixa de input de postagem */
-  .post-form-create {
-    
-    height: 105px;
-    width: 620px; /* Ajuste a largura desejada */
-    margin-left: 270px;
-    margin-right: auto;
-    margin-bottom: 50px;
-    word-wrap: break-word;
-    overflow: auto;
-    display: flex;
-    transform: translateX(-0%);
-    align-items: center;
-    border: 1px solid #ccc;
-    position: relative; /* Adicionamos a posição relativa para o textarea ser posicionado */
-    z-index: 1; /* Definimos um z-index para que o textarea fique acima do post abaixo */
-  }
+.post-form-create textarea {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  outline: none;
+  resize: none;
+  min-height: 70px;
+  margin-bottom: -5px;
+}
 
-  .post-form-create textarea {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    outline: none;
-    resize: none;
-    min-height: 70px;
-    margin-bottom: -5px; /* Ajuste para aproximar o textarea do post abaixo */
-  }
+.post-form-create button {
+  margin-left: 8px;
+  margin-right: 20px;
+  margin-bottom: -35px;
+  padding: 10px 22px;
+  background-color: #000000;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 19px;
+  cursor: pointer;
+}
 
+#content {
+  padding-top: 20px;
+  padding-left: 19px;
+  color: #3d3d3d;
+  font-weight: normal;
+  font-size: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  .post-form-create button {
-    margin-left: 8px;
-    margin-right: 20px;
-    margin-bottom: -35px;
-    padding: 10px 22px;
-    background-color: #000000;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    border-radius: 19px;
-    cursor: pointer;
-  }
-  #content {
-    padding-top:20px;
-    padding-left: 19px;
-    color: #3d3d3d;
-    font-weight: normal;
-    font-size: 15px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  #content::placeholder {
-    left: 15px;
-    color: #747474; /* Cor do placeholder */
-    font-size: 17px; /* Tamanho da fonte do placeholder */
-  }
-  /* Estilização para o ícone de perfil */
-  .profile-icon {
-    margin-top: 1px;
-    width: 43px; /* Ajuste o tamanho do ícone conforme necessário */
-    height: 43px;
-    border-radius: 50%; /* Deixa o ícone redondo */
-    margin-left: 5px; /* Espaçamento entre o ícone e o campo CreatedBy */
-  } 
+#content::placeholder {
+  left: 15px;
+  color: #747474;
+  font-size: 17px;
+}
+
+.profile-icon {
+  margin-top: 1px;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
 .bar-btn-container {
   position: fixed;
   bottom: 0px;
@@ -169,25 +167,24 @@ body {
   background-color: #ffffff;
   border: 1px solid #ccc;
   padding: 10px;
-  width: 600px; /* Ajuste a largura desejada */
-  height: 30px; /* Defina a altura desejada */
+  width: 600px;
+  height: 30px;
   margin-left: 270px;
   margin-right: auto;
   z-index: 3;
-
 }
+
 .bar-btn {
   display: flex;
   gap: 10px;
 }
 
-
 .vertical-bar {
   display: flex;
-  align-items: center; /* Alinha a imagem verticalmente no botão */
-  background: none; /* Remove o plano de fundo do botão */
-  border: none; /* Remove a borda do botão */
-  padding: 0; /* Remove o preenchimento interno do botão */
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -199,7 +196,6 @@ body {
   vertical-align: bottom;
 }
 
-
 #home-btn {
   background-color: #ffffff;
   position: fixed;
@@ -210,17 +206,18 @@ body {
   cursor: pointer;
   bottom: 2px;
   left: 15px;
-}  
+}
+
 #profile-btn {
-background-color: #ffffff;
-position: fixed;
-color: white;
-border: none;
-border-radius: 50%;
-padding: 7px 7px;
-cursor: pointer;
-bottom: 2px;
-left: 191px;
+  background-color: #ffffff;
+  position: fixed;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 7px 7px;
+  cursor: pointer;
+  bottom: 2px;
+  left: 191px;
 }
 
 #post-btn {
@@ -233,65 +230,71 @@ left: 191px;
   cursor: pointer;
   bottom: 2px;
   left: 279px;
-  }
-  #configure-btn {
-    background-color: #ffffff;
-    position: fixed;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 7px 7px;
-    cursor: pointer;
-    bottom: 2px;
-    left: 367px;
-    }
-    #logout-btn {
-      background-color: #ffffff;
-      position: fixed;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      padding: 7px 7px;
-      cursor: pointer;
-      bottom: 2px;
-      left: 455px;
-      }
+}
 
-#search-btn{
-background-color: #ffffff;
-position: fixed;
-color: rgb(0, 0, 0);
-border: none;
-border-radius: 50%;
-padding: 7px 7px;
-cursor: pointer;
-bottom: 2px;
-left: 103px;
+#configure-btn {
+  background-color: #ffffff;
+  position: fixed;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 7px 7px;
+  cursor: pointer;
+  bottom: 2px;
+  left: 367px;
+}
+
+#logout-btn {
+  background-color: #ffffff;
+  position: fixed;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 7px 7px;
+  cursor: pointer;
+  bottom: 2px;
+  left: 455px;
+}
+
+#search-btn {
+  background-color: #ffffff;
+  position: fixed;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  padding: 7px 7px;
+  cursor: pointer;
+  bottom: 2px;
+  left: 103px;
 
 }
 
-#profile-btn:hover{
-  background-color: #e5e5e5;
-  border: #e5e5e5;
-}
-#home-btn:hover{
-  background-color: #e5e5e5;
-  border: #e5e5e5;
-}
-#logout-btn:hover{
+#profile-btn:hover {
   background-color: #e5e5e5;
   border: #e5e5e5;
 }
 
-#search-btn:hover{
+#home-btn:hover {
   background-color: #e5e5e5;
   border: #e5e5e5;
 }
-#configure-btn:hover{
+
+#logout-btn:hover {
   background-color: #e5e5e5;
   border: #e5e5e5;
 }
-#post-btn:hover{
+
+#search-btn:hover {
+  background-color: #e5e5e5;
+  border: #e5e5e5;
+}
+
+#configure-btn:hover {
+  background-color: #e5e5e5;
+  border: #e5e5e5;
+}
+
+#post-btn:hover {
   background-color: #e5e5e5;
   border: #e5e5e5;
 }

@@ -25,7 +25,7 @@ function loadProfile(username) {
           var userDetailsHTML = '<div class="user">' +
           '<header>' +
           
-          '<img src="public/images/user-icon.jpg" class="user-icon">' +
+          '<img src="public/images/golang-icon2.jpeg" class="user-icon">' +
           '<div class="user-title">' +
           '<p>@' + response.profile.username + '</p>' +
           '</div>' +
@@ -52,12 +52,42 @@ function loadProfile(username) {
           '</footer>' +
           '</div>';
         var $userDetails = $(userDetailsHTML);
+        $(document).ready(function() {
+          // Function to handle the Follow button click event
+          $("#following-btn").click(function() {
+            // Disable the button while the request is being processed
+            $("#following-btn").prop("disabled", true);
+            var pathParts = window.location.pathname.split("/"); // Divide a URL em partes
+            var user_follow_to = pathParts[pathParts.length - 1]; // O último elemento deve ser o nome de usuário
+          
+            // Perform AJAX request to follow the user
+            $.ajax({
+              type: "POST",
+              url: "/unfollow", // Replace with the actual endpoint to perform the follow action
+              data: {
+                username: user_follow_to, // Replace with the user ID you want to follow
+              },
+              success: function(response) {
+                $("#following-btn").hide();
+                $("#follow-btn").show();
+                
+                $("#following-btn").text("Follow").prop("disabled", false);
+                console.log("Unfollowed successfully:", response);
+              },
+              error: function() {
+                // Re-enable the button in case of an error
+                $("#follow-btn").prop("disabled", false);
+                console.log("Error following user");
+              }
+            });
+          });
+        });
         $("#user-profile-container").append($userDetails);
       } else {
         var userDetailsHTML = '<div class="user">' +
           '<header>' +
           
-          '<img src="public/images/user-icon.jpg" class="user-icon">' +
+          '<img src="public/images/golang-icon2.jpeg" class="user-icon">' +
           '<div class="user-title">' +
           '<p>@' + response.profile.username + '</p>' +
           '</div>' +
@@ -125,7 +155,7 @@ function loadProfile(username) {
         response.posts.forEach(function(post) {
           var postHTML = '<div class="post">' +
           '<header>' +
-          '<img src="public/images/user-icon.jpg" class="profile-icon">' +
+          '<img src="public/images/golang-icon2.jpeg" class="profile-icon">' +
           '<div class="post-title">' +
           '<div class="user-name-post">' +
           '<p class="name-user' + post.postID + '">' + post.createdbyname + '</p>' +

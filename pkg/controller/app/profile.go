@@ -292,16 +292,17 @@ func AnotherUserProfile(c *gin.Context) {
 }
 
 func Profile(c *gin.Context) {
+	var user User
+	var post Post
+
 	utils.LoggedIn(c, "/welcome")
 
 	idInterface, _ := utils.AllSessions(c)
 	id, _ := strconv.Atoi(idInterface.(string))
 	db := CON.DB()
-	var post Post
+
 	post.UserID = id
 
-	// Fetch user information
-	var user User
 	queryUser := `
 	SELECT
 		user1.username, user1.name, user1.bio,
@@ -385,10 +386,7 @@ func Profile(c *gin.Context) {
 }
 
 func RenderProfileTemplate(c *gin.Context) {
-	// Recupere o nome de usuário da URL
 	username := c.Param("username")
-
-	// Recupere o ID da sessão (convertido para int)
 	idInterface, _ := utils.AllSessions(c)
 	id, _ := strconv.Atoi(idInterface.(string))
 

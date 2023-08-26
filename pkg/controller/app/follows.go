@@ -53,12 +53,28 @@ func Follow(c *gin.Context) {
 
 func Unfollow(c *gin.Context) {
 	id, _ := utils.AllSessions(c)
-	user := c.PostForm("user")
 	username := c.PostForm("username")
-
 	db := CON.DB()
-	stmt, _ := db.Prepare("DELETE FROM follow WHERE followBy=? AND followTo=?")
-	_, err := stmt.Exec(id, user)
+
+	var userID int
+	err := db.QueryRow("SELECT id FROM user1 WHERE username = ?", username).Scan(&userID)
+	if err != nil {
+		log.Println("Failed to query user ID", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to get user ID",
+		})
+		return
+	}
+
+	stmt, err := db.Prepare("DELETE FROM user_follow WHERE followBy=? AND followTo=?")
+	if err != nil {
+		log.Println("Failed to prepare statement", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to prepare statement",
+		})
+		return
+	}
+	_, err = stmt.Exec(id, userID)
 	if err != nil {
 		log.Println("Failed to query statement", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -69,7 +85,7 @@ func Unfollow(c *gin.Context) {
 	}
 
 	resp := map[string]interface{}{
-		"mssg": "Unfollowed " + username + "!!",
+		"mssg": "Unfollowed ",
 	}
 	c.JSON(http.StatusOK, resp)
 }
