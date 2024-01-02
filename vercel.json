@@ -6,11 +6,6 @@
     "routes": [
       { "src": "/public/(.*)", "dest": "/public/$1" },
       { "src": "/(.*)", "dest": "/main.go" }
-    ],
-    "functions": {
-      "api/main.go": {
-        "runtime": "go1.17"
-      }
-    }
+    ]
   }
   
