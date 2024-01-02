@@ -9,34 +9,37 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	r := gin.Default()
+	router := gin.Default()
 
-	r.LoadHTMLGlob("C:/social-network-go/templates/*")
-	r.Static("/public", "./public")
+	router.LoadHTMLGlob("C:/social-network-go/templates/*")
+	router.Static("/public", "./public")
 
-	r.GET("/signup", func(c *gin.Context) {
+	router.GET("/signup", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "signup.html", gin.H{})
 	})
-	r.GET("/login", func(c *gin.Context) {
+	router.GET("/login", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.html", gin.H{})
 	})
-	r.GET("/create-post", func(c *gin.Context) {
+	router.GET("/create-post", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "post.html", gin.H{})
 	})
-	r.GET("/home", func(c *gin.Context) {
+	router.GET("/home", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{})
 	})
 
-	routes.InitRoutes(r.Group("/"))
+	routes.InitRoutes(router.Group("/"))
 
-	errServer := r.Run(":8080")
-	if errServer != nil {
-		log.Fatal(errServer)
-	}
+	// Agora, você pode usar o método ServeHTTP para a execução no Vercel
+	router.ServeHTTP(w, r)
+}
+
+func main() {
+	// Chama a função Handler diretamente para execução no Vercel
+	Handler(nil, nil)
 }
