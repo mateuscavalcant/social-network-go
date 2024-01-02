@@ -1,11 +1,10 @@
 {
     "version": 2,
     "builds": [
-      { "src": "handler/handler.go", "use": "@vercel/go" }
+        { "src": "handler/*.go", "use": "@vercel/go" }
     ],
     "routes": [
-      { "src": "/public/(.*)", "dest": "/public/$1" },
-      { "src": "/(.*)", "dest": "handler" }
+        { "src": "/public/(.*)", "dest": "/public/$1" },
+        { "src": "/(.*)", "dest": "/handler/$1" }
     ]
-  }
-  
+}
