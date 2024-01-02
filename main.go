@@ -38,8 +38,3 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	// Agora, você pode usar o método ServeHTTP para a execução no Vercel
 	router.ServeHTTP(w, r)
 }
-
-func main() {
-	// Chama a função Handler diretamente para execução no Vercel
-	Handler(nil, nil)
-}
