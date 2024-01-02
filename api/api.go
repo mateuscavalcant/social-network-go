@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func InitServer() error {
+func Handler() error {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")

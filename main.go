@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	err := api.InitServer()
+	err := api.Handler()
 	if err != nil {
 		log.Fatal("Error initializing server: ", err)
 	}
