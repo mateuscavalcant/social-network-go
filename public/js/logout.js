@@ -2,7 +2,7 @@ function handleLogout(event) {
   event.preventDefault();
   $.ajax({
     url: "/loggout",
-    method: "GET",
+    method: "POST",
     success: function (response) {
       window.location.replace("/login");
     },

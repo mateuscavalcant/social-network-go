@@ -2,7 +2,7 @@
 function loadPosts() {
   $.ajax({
     url: "/feed",
-    method: "GET",
+    method: "POST",
     success: function (response) {
       // Limpar o conteúdo anterior
       $("#posts-container").empty();
@@ -11,7 +11,7 @@ function loadPosts() {
       response.posts.forEach(function (post) {
         var postHTML = '<div class="post">' +
           '<header>' +
-          '<img src="public/images/user-icon-post2.jpeg" class="profile-icon">' +
+          '<img src="public/images/user-icon-post.png" class="profile-icon">' +
           '<div class="post-title">' +
           '<div class="user-name">' +
           '<p class="name-user' + post.postID + '">' + post.createdbyname + '</p>' +
@@ -72,7 +72,7 @@ function handleProfile(event) {
   event.preventDefault();
   $.ajax({
     url: "/profile",
-    method: "GET",
+    method: "POST",
     success: function (response) {
       var username = response.profile.username
       window.location.replace("/" + username);

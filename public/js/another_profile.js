@@ -1,7 +1,7 @@
 function loadProfile(username) {
   $.ajax({
     url: "/profile/" + username,
-    method: "GET",
+    method: "POST",
     success: function (response) {
       var userHeaderDetailsHTML = '<div class="name">' +
         '<header>' +

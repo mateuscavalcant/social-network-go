@@ -2,7 +2,7 @@
 function loadPostsProfile() {
   $.ajax({
     url: "/profile",
-    method: "GET",
+    method: "POST",
     success: function (response) {
       var userHeaderDetailsHTML = '<div class="name">' +
         '<header>' +
@@ -21,7 +21,7 @@ function loadPostsProfile() {
       $("#profile-header-container").append($userHeaderDetails);
       var userDetailsHTML = '<div class="user">' +
         '<header>' +
-        '<img src="public/images/user-icon-profile.png" class="user-icon">' +
+        '<img src="public/images/icon-other-profile.jpeg" class="user-icon">' +
         '<div class="user-title">' +
         '<p>@' + response.profile.username + '</p>' +
         '</div>' +
@@ -52,7 +52,7 @@ function loadPostsProfile() {
       response.posts.forEach(function (post) {
         var postHTML = '<div class="post">' +
           '<header>' +
-          '<img src="public/images/user-icon-profile.png" class="profile-icon">' +
+          '<img src="public/images/icon-other-profile.jpeg" class="profile-icon">' +
           '<div class="post-title">' +
           '<div class="user-name-post">' +
           '<p class="name-user' + post.postID + '">' + post.createdbyname + '</p>' +
