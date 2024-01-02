@@ -9,7 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Handler() error {
+func Handler(w http.ResponseWriter, r1 *http.Request) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -37,8 +37,6 @@ func Handler() error {
 
 	errServer := r.Run(":8080")
 	if errServer != nil {
-		return errServer
+		log.Fatal(errServer)
 	}
-
-	return nil
 }
