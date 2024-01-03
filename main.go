@@ -5,7 +5,7 @@ import (
 	"social-network-go/handler"
 )
 
-func main() {
+func Main() {
 	err := handler.Handler()
 	if err != nil {
 		log.Fatal("Error initializing server: ", err)
