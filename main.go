@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 	"social-network-go/handler"
+	
 )
 
-func Handlern() {
-	err := handler.Handler()
+func main() {
+	err := handler.InitServer()
 	if err != nil {
 		log.Fatal("Error initializing server: ", err)
 	}
-
 }

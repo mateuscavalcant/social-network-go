@@ -3,13 +3,14 @@ package handler
 import (
 	"log"
 	"net/http"
+	"os"
 	"social-network-go/pkg/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-func Handler() error {
+func InitServer() error {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -35,7 +36,12 @@ func Handler() error {
 
 	routes.InitRoutes(r.Group("/"))
 
-	errServer := r.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	errServer := r.Run(":" + port)
 	if errServer != nil {
 		return errServer
 	}
