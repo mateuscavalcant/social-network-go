@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	
 )
 
-func main() {
+func Handler() {
 	err := handler.InitServer()
 	if err != nil {
 		log.Fatal("Error initializing server: ", err)
